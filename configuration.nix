@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./virtualisation.nix
+      ./cachix.nix
       ./nvidia.nix
     ];
 
@@ -117,6 +118,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
+    cachix
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
