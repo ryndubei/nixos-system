@@ -168,8 +168,8 @@ in
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
 
-  # Enable all sysrq functions (useful to recover from some issues):
-  boot.kernel.sysctl."kernel.sysrq" = 1; # NixOS default: 16 (only the sync command)
+  # Enable sync, reboot and remount read-only (see https://bugs.launchpad.net/ubuntu/+source/linux/+bug/194676)
+  boot.kernel.sysctl."kernel.sysrq" = 176; # NixOS default: 16 (only the sync command)
   # Documentation: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
 
   # DNS-over-TLS
