@@ -19,7 +19,17 @@
           modules = 
           [
             ./configuration.nix
+            ./virtualisation.nix
             vfio
+          ];
+        };
+        nixos-laptop = lib.nixosSystem 
+        {
+          system = "x86_64-linux";
+          modules = 
+          [
+            ./configuration.nix
+            ./nvidia-laptop.nix
           ];
         };
       };

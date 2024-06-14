@@ -8,7 +8,6 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./virtualisation.nix
       ./cachix.nix
       ./nvidia.nix
     ];
@@ -20,7 +19,11 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.initrd.luks.devices."luks-d7e8aab7-15a6-410b-b846-af3690149173".device = "/dev/disk/by-uuid/d7e8aab7-15a6-410b-b846-af3690149173";
+  # Note that we assume both devices have an encrypted swap partition labelled
+  # "cryptswap", and a second drive mounted at /mnt/hard_drive
+  boot.initrd.luks.devices."cryptswap".device = "/dev/disk/by-partlabel/cryptswap";
+  fileSystems."/mnt/hard_drive".options = [ "x-gvfs-show" ];
+
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -97,7 +100,7 @@
   users.users.vasilysterekhov = {
     isNormalUser = true;
     description = "Vasily Sterekhov";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
+    extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
     #  thunderbird
     ];
