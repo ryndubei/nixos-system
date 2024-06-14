@@ -3,7 +3,10 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-24.05";
-    nixos-vfio.url = "github:j-brn/nixos-vfio";
+    nixos-vfio = {
+      url = "github:j-brn/nixos-vfio";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { nixpkgs, nixos-vfio, ...}@inputs:
