@@ -103,9 +103,7 @@ in
     description = "Vasily Sterekhov";
     extraGroups = [ "networkmanager" "wheel" ] 
                ++ (lib.optional libvirtEnabled "libvirtd" );
-    packages = with pkgs; [
-    #  thunderbird
-    ];
+    packages = [ inputs.home-manager ];
   };
 
   # Automatic upgrades
@@ -192,5 +190,8 @@ in
     "https://cache.iog.io"
     "https://cache.zw3rk.com"
   ];
+
+  # Synchronise home-manager flake with the rest of the system
+  nix.registry."home-manager".flake = inputs.home-manager;
 }
 
