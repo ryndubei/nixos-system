@@ -20,6 +20,7 @@
           [
             ./configuration.nix
             ./virtualisation.nix
+            ./hardware-configuration-desktop.nix
             vfio
           ];
         };
@@ -30,6 +31,7 @@
           [
             ./configuration.nix
             ./nvidia-laptop.nix
+            ./hardware-configuration-laptop.nix
           ];
         };
       };
