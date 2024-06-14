@@ -112,8 +112,7 @@ in
   system.autoUpgrade = {
     enable = true;
     flake = inputs.self.outPath;
-    # uncomment if switch causes problems with specialisations:
-    # operation = "boot";
+    operation = "boot";
     flags = [
       "--update-input"
       "nixpkgs"
