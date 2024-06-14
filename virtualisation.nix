@@ -5,8 +5,6 @@
   boot.kernelParams = [ "intel_iommu=on" "iommu=pt" ];
   boot.kernelModules = [ "kvm-intel" "vfio-pci" ];
 
-  users.users.vasilysterekhov.extraGroups = [ "libvirtd" ];
-
   systemd.services.libvirtd = { 
     path = let 
              env = pkgs.buildEnv {

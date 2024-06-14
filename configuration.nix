@@ -4,6 +4,8 @@
 
 { config, pkgs, lib, ... }:
 
+let libvirtEnabled = config.virtualisation.libvirtd.enable;
+in
 {
   imports =
     [
@@ -99,7 +101,8 @@
   users.users.vasilysterekhov = {
     isNormalUser = true;
     description = "Vasily Sterekhov";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" ] 
+               ++ (lib.optional libvirtEnabled "libvirtd" );
     packages = with pkgs; [
     #  thunderbird
     ];
