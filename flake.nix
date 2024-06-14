@@ -6,7 +6,7 @@
     nixos-vfio.url = "github:j-brn/nixos-vfio";
   };
 
-  outputs = { nixpkgs, nixos-vfio, ...}:
+  outputs = { nixpkgs, nixos-vfio, ...}@inputs:
     let lib = nixpkgs.lib;
         vfio = nixos-vfio.nixosModules.vfio;
     in 
@@ -16,6 +16,7 @@
         nixos-desktop = lib.nixosSystem 
         {
           system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
           modules = 
           [
             ./configuration.nix
@@ -27,6 +28,7 @@
         nixos-laptop = lib.nixosSystem 
         {
           system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
           modules = 
           [
             ./configuration.nix
