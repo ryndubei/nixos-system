@@ -1,11 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [
-      ./nixos-vfio/modules/libvirtd/scopedHooks.nix
-    ];
-  
   # set kernel params for virtualisation
   boot.kernelParams = [ "intel_iommu=on" "iommu=pt" ];
   boot.kernelModules = [ "kvm-intel" "vfio-pci" ];

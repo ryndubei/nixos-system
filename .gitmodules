@@ -1,3 +1,0 @@
-[submodule "nixos-vfio"]
-	path = nixos-vfio
-	url = https://github.com/j-brn/nixos-vfio
