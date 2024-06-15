@@ -9,36 +9,37 @@
     };
   };
 
-  outputs = { nixpkgs, nixos-vfio, ...}@inputs:
-    let lib = nixpkgs.lib;
-        vfio = nixos-vfio.nixosModules.vfio;
-    in 
+  outputs = { nixpkgs, nixos-vfio, ... }@inputs:
+    let
+      lib = nixpkgs.lib;
+      vfio = nixos-vfio.nixosModules.vfio;
+    in
     {
-      nixosConfigurations = 
-      {
-        nixos-desktop = lib.nixosSystem 
+      nixosConfigurations =
         {
-          system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
-          modules = 
-          [
-            ./configuration.nix
-            ./virtualisation.nix
-            ./hardware-configuration-desktop.nix
-            vfio
-          ];
+          nixos-desktop = lib.nixosSystem
+            {
+              system = "x86_64-linux";
+              specialArgs = { inherit inputs; };
+              modules =
+                [
+                  ./configuration.nix
+                  ./virtualisation.nix
+                  ./hardware-configuration-desktop.nix
+                  vfio
+                ];
+            };
+          nixos-laptop = lib.nixosSystem
+            {
+              system = "x86_64-linux";
+              specialArgs = { inherit inputs; };
+              modules =
+                [
+                  ./configuration.nix
+                  ./nvidia-laptop.nix
+                  ./hardware-configuration-laptop.nix
+                ];
+            };
         };
-        nixos-laptop = lib.nixosSystem 
-        {
-          system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
-          modules = 
-          [
-            ./configuration.nix
-            ./nvidia-laptop.nix
-            ./hardware-configuration-laptop.nix
-          ];
-        };
-      };
     };
 }

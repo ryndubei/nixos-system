@@ -11,8 +11,8 @@
     nvidiaBusId = "PCI:1:0:0";
   };
 
-  specialisation = { 
-    no-dgpu.configuration = { 
+  specialisation = {
+    no-dgpu.configuration = {
       system.nixos.tags = [ "no-dgpu" ];
 
       services.xserver.videoDrivers = lib.mkForce [ "modesetting" "fbdev" ]; # the default value
@@ -23,10 +23,10 @@
 
       # Completely disable dGPU
       boot.extraModprobeConfig = ''
-      blacklist nouveau
-      options nouveau modeset=0
+        blacklist nouveau
+        options nouveau modeset=0
       '';
-       
+
       services.udev.extraRules = ''
         # Remove NVIDIA USB xHCI Host Controller devices, if present
         ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x0c0330", ATTR{power/control}="auto", ATTR{remove}="1"
@@ -38,7 +38,7 @@
         ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", ATTR{power/control}="auto", ATTR{remove}="1"
       '';
       boot.blacklistedKernelModules = [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" ];
-    };  
-  };  
+    };
+  };
 }
 

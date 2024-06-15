@@ -5,27 +5,29 @@
   boot.kernelParams = [ "intel_iommu=on" "iommu=pt" ];
   boot.kernelModules = [ "kvm-intel" "vfio-pci" ];
 
-  systemd.services.libvirtd = { 
-    path = let 
-             env = pkgs.buildEnv {
-               name = "qemu-hook-env";
-               paths = with pkgs; [
-                 bash
-                 libvirt
-                 kmod
-                 systemd
-                 ripgrep
-                 sd
-               ];
-             };
-            in [ env ];
+  systemd.services.libvirtd = {
+    path =
+      let
+        env = pkgs.buildEnv {
+          name = "qemu-hook-env";
+          paths = with pkgs; [
+            bash
+            libvirt
+            kmod
+            systemd
+            ripgrep
+            sd
+          ];
+        };
+      in
+      [ env ];
     # note that you must place as21_patched.rom into /etc/nixos
     preStart =
-    ''
-      mkdir -p /var/lib/libvirt/vgabios
-      ln -sf /etc/nixos/as21_patched.rom /var/lib/libvirt/vgabios/as21_patched.rom
-    '';
-  };  
+      ''
+        mkdir -p /var/lib/libvirt/vgabios
+        ln -sf /etc/nixos/as21_patched.rom /var/lib/libvirt/vgabios/as21_patched.rom
+      '';
+  };
 
   virtualisation.libvirtd = {
     enable = true;
@@ -35,7 +37,7 @@
     qemu.ovmf.enable = true;
   };
   programs.virt-manager.enable = true;
-  
+
   virtualisation.libvirtd.scopedHooks.qemu = {
 
     start = {

@@ -101,9 +101,9 @@ in
   users.users.vasilysterekhov = {
     isNormalUser = true;
     description = "Vasily Sterekhov";
-    extraGroups = [ "networkmanager" "wheel" ] 
-               ++ (lib.optional libvirtEnabled "libvirtd" );
-    packages = [];
+    extraGroups = [ "networkmanager" "wheel" ]
+      ++ (lib.optional libvirtEnabled "libvirtd");
+    packages = [ ];
   };
 
   # Automatic upgrades
@@ -180,7 +180,7 @@ in
     fallbackDns = [ "9.9.9.9" "149.112.112.112" ];
     dnsovertls = "true";
   };
-    
+
   # haskell.nix and https://github.com/input-output-hk/devx
   nix.settings.trusted-public-keys = [
     "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
