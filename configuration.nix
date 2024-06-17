@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, ... }:
 
 let libvirtEnabled = config.virtualisation.libvirtd.enable;
 in
@@ -107,18 +107,18 @@ in
   };
 
   # Automatic upgrades
-  system.autoUpgrade = {
-    enable = true;
-    flake = inputs.self.outPath;
-    operation = "boot";
-    flags = [
-      "--update-input"
-      "nixpkgs"
-      "-L" # print build logs
-    ];
-    dates = "12:00";
-    randomizedDelaySec = "45min";
-  };
+  #system.autoUpgrade = {
+  #  enable = true;
+  #  flake = inputs.self.outPath;
+  #  operation = "boot";
+  #  flags = [
+  #    "--update-input"
+  #    "nixpkgs"
+  #    "-L" # print build logs
+  #  ];
+  #  dates = "12:00";
+  #  randomizedDelaySec = "45min";
+  #};
 
   # Misc services
   services.flatpak.enable = true;
