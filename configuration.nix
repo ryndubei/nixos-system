@@ -7,6 +7,8 @@
 let libvirtEnabled = config.virtualisation.libvirtd.enable;
 in
 {
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
   imports =
     [
       ./cachix.nix
