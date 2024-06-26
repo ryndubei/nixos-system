@@ -27,6 +27,9 @@ in
   boot.initrd.luks.devices."cryptswap".device = "/dev/disk/by-partlabel/cryptswap";
   fileSystems."/mnt/hard_drive".options = [ "x-gvfs-show" ];
 
+  # Enable SSD TRIM
+  services.fstrim.enable = true;
+
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
