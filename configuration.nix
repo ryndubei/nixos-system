@@ -195,8 +195,8 @@ in
     "loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk="
   ];
   nix.settings.substituters = lib.mkAfter [
-    "https://cache.iog.io"
-    "https://cache.zw3rk.com"
+    "https://cache.iog.io?priority=999"
+    "https://cache.zw3rk.com?priority=1000"
   ];
 
 }
