@@ -1,0 +1,26 @@
+name: Update flake.lock
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * *'
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: The Determinate Nix Installer
+      uses: DeterminateSystems/nix-installer-action@v12
+    - name: Update flake.lock
+      run: nix flake lock --update-input nixpkgs
+    - name: Commit files
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add flake.lock
+        git commit -m "Update flake.lock"
+    - name: Push changes
+      uses: ad-m/github-push-action@v0.8.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: "main"
