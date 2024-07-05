@@ -130,6 +130,9 @@ in
   services.mullvad-vpn.enable = true;
   services.mullvad-vpn.package = pkgs.mullvad-vpn;
 
+  # Add fish shell
+  programs.fish.enable = true;
+
   # Install firefox.
   programs.firefox.enable = true;
 
