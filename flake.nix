@@ -5,14 +5,22 @@
     nixpkgs.url = "nixpkgs/nixos-24.05";
     nixos-vfio = {
       url = "github:j-brn/nixos-vfio";
+      # It is a flake, but we only want one internal module
+      # without any configuration modifications.
+      flake = false;
+    };
+    nixvirt = {
+      # TODO: make PR for the changes in my fork
+      url = "github:ryndubei/NixVirt";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, nixos-vfio, ... }@inputs:
+  outputs = { nixpkgs, nixos-vfio, nixvirt, ... }@inputs:
     let
       lib = nixpkgs.lib;
-      vfio = nixos-vfio.nixosModules.vfio;
+      nixv = nixvirt.nixosModules.default;
+      scopedHooks = "${nixos-vfio}/modules/libvirtd/scopedHooks.nix";
     in
     {
       nixosConfigurations =
@@ -25,8 +33,10 @@
                 [
                   ./configuration.nix
                   ./virtualisation.nix
+                  ./virtualisation/win10.nix
                   ./hardware-configuration-desktop.nix
-                  vfio
+                  nixv
+                  scopedHooks
                 ];
             };
           nixos-laptop = lib.nixosSystem

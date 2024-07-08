@@ -1,0 +1,239 @@
+{ inputs, pkgs, lib, ... }:
+let
+  # - Hardware information for the VM
+
+  # CPU topology to use in the VM - leave at least one core for the host
+  topology = {
+    sockets = 1;
+    dies = 1;
+    cores = 5;
+    threads = 2;
+  };
+  # suppose the IOMMU address is AA:BB.C
+  # then domain = 0, bus = AA, slot = BB, function = C
+  gpu-video = { domain = 0; bus = 1; slot = 0; function = 0; };
+  gpu-audio = { domain = 0; bus = 1; slot = 0; function = 1; };
+  nvme-ssd = { domain = 0; bus = 2; slot = 0; function = 0; };
+  wifi-controller = { domain = 0; bus = 4; slot = 0; function = 0; };
+
+  usb-mouse = {
+    mode = "subsystem";
+    type = "usb";
+    managed = true;
+    source = {
+      vendor = { id = 9639; };
+      product = { id = 64103; };
+    };
+    address = { type = "usb"; bus = 0; port = 2; };
+  };
+
+  usb-keyboard = {
+    mode = "subsystem";
+    type = "usb";
+    managed = true;
+    source = {
+      vendor = { id = 6700; };
+      product = { id = 16510; };
+    };
+    address = { type = "usb"; bus = 0; port = 3; };
+  };
+
+  # - Helper functions
+
+  # Function to generate a UUID from a name
+  # (is it wasteful that this gets recorded in the nix store?)
+  mkUuid = name: builtins.readFile (pkgs.runCommandNoCC "uuid-of-${name}" { allowSubstitutes = false; } ''
+    echo -n $(${pkgs.libuuid}/bin/uuidgen --name ${name} --namespace @oid --md5) > $out 
+  '');
+
+  # will fail if targetLen < strLength
+  leftPadString = targetLen: str:
+    let
+      strLength = builtins.stringLength str;
+      padding = builtins.foldl' (a: b: a + b) "" (builtins.genList (x: "0") (targetLen - strLength));
+    in
+    padding + str;
+
+  mkPciAddress = { domain, bus, slot, function }:
+    let
+      domain' = leftPadString 4 (lib.toHexString domain);
+      bus' = leftPadString 2 (lib.toHexString bus);
+      slot' = leftPadString 2 (lib.toHexString slot);
+      function' = leftPadString 1 (lib.toHexString function);
+    in
+    "pci_" + domain' + "_" + bus' + "_" + slot' + "_" + function';
+
+  VIRSH_GPU_VIDEO = mkPciAddress gpu-video;
+  VIRSH_GPU_AUDIO = mkPciAddress gpu-audio;
+
+  # (name -> path to executable) -> name -> deriv. of wrapper setting 
+  # VIRSH_GPU_VIDEO and VIRSH_GPU_AUDIO environment variables
+  wrapVars = mk-exe: name: pkgs.writeShellScript "wrapped-${name}" ''
+    export VIRSH_GPU_VIDEO="${VIRSH_GPU_VIDEO}"
+    export VIRSH_GPU_AUDIO="${VIRSH_GPU_AUDIO}"
+    exec ${mk-exe name} "$@"
+  '';
+
+  # (path to script) -> name -> deriv. of script with shebangs patched
+  patchShebangs = script-path: name:
+    let script-text = builtins.readFile script-path;
+    in (pkgs.writeScript name script-text).overrideAttrs
+      (old: {
+        buildCommand = ''
+          ${old.buildCommand}
+          patchShebangs $out
+        '';
+      });
+
+  # Formats input as a PCI device entry of devices.hostdev
+  mkPciPassthrough = { source-address, bus-index, rom-file ? null }:
+    {
+      mode = "subsystem";
+      type = "pci";
+      managed = true;
+      source.address = source-address;
+      rom.file = rom-file;
+      address = { type = "pci"; domain = 0; bus = bus-index; slot = 0; function = 0; };
+    };
+
+  # If `set.attr` does not exist, returns `default`, otherwise returns `set.attr`
+  getAttrDefault = default: attr: set: if builtins.hasAttr attr set then set.${attr} else default;
+in
+{
+  virtualisation.libvirt.connections."qemu:///system".domains =
+    let
+      win10-base = (inputs.nixvirt.lib.domain.templates.windows
+        rec {
+          name = "win10-nogpu";
+          uuid = mkUuid name;
+          memory = { count = 12; unit = "GiB"; };
+          # note: supports only qcow2 here, hence adding disk manually
+          # also note: does not actually default to null
+          storage_vol = null;
+          virtio_net = true;
+          virtio_video = false;
+          virtio_drive = true;
+          nvram_path = "/var/lib/libvirt/qemu/nvram/win10-nogpu_VARS.nvram";
+        });
+
+      final-edit = old-xml: (old-xml // {
+        vcpu = {
+          placement = "static";
+          count = topology.sockets * topology.dies * topology.cores * topology.threads;
+        };
+
+        # Device information for calming down EAC
+        sysinfo = {
+          type = "smbios";
+          bios.entry = [
+            { name = "vendor"; value = "American Megatrends International, LLC."; }
+            { name = "version"; value = "F31o"; }
+            { name = "date"; value = "09/09/2021"; }
+          ];
+          system.entry = [
+            { name = "manufacturer"; value = "Micro-Star International Co., Ltd."; }
+            { name = "product"; value = "MS-7D19"; }
+            { name = "version"; value = "1.0"; }
+            { name = "serial"; value = "Default string"; }
+            { name = "uuid"; value = old-xml.uuid; }
+            { name = "sku"; value = "Default string"; }
+            { name = "family"; value = "Default string"; }
+          ];
+        };
+        os = old-xml.os // { smbios.mode = "sysinfo"; };
+        features = old-xml.features // {
+          hyperv = old-xml.features.hyperv // {
+            mode = "passthrough";
+            vendor_id = {
+              # This and
+              state = true;
+              value = "0123756792CD";
+            };
+          };
+          # this are necessary to bypass code 43 on NVIDIA GPUs
+          # and also to bypass EAC
+          kvm.hidden.state = true;
+        };
+
+        cpu = old-xml.cpu // { inherit topology; };
+
+        devices = old-xml.devices // {
+          # running on windows 10, so no need + 
+          # `libvirt error: unsupported configuration: TPM version '2.0' is not supported`
+          # on activation
+          tpm = null;
+          disk = [
+            {
+              type = "file";
+              device = "disk";
+              driver = { name = "qemu"; type = "raw"; };
+              target = { dev = "vda"; bus = "virtio"; };
+              # Path to win10 image:
+              # virtio drivers must be already installed
+              source.file = "/var/lib/libvirt/images/win10.img";
+            }
+          ];
+          hostdev = (getAttrDefault [ ] "hostdev" old-xml.devices) ++ map mkPciPassthrough
+            [
+              { source-address = nvme-ssd; bus-index = 8; }
+              { source-address = wifi-controller; bus-index = 1; }
+            ];
+        };
+      });
+
+      add-gpu = old-xml: (old-xml // rec {
+        # Make the VM distinct
+        name = "win10";
+        uuid = mkUuid name;
+        os = old-xml.os // {
+          nvram = old-xml.os.nvram // {
+            path = "/var/lib/libvirt/qemu/nvram/win10_VARS.fd";
+          };
+        };
+
+        # Pass through GPU devices and USB mouse and keyboard
+        devices = old-xml.devices // {
+          hostdev = (map mkPciPassthrough
+            [
+              # A patched ROM is necessary for some NVIDIA cards.
+              # See https://github.com/QaidVoid/Complete-Single-GPU-Passthrough?tab=readme-ov-file#vbios-patching
+              { source-address = gpu-video; bus-index = 6; rom-file = gpu-passthrough/as21_patched.rom; }
+              { source-address = gpu-audio; bus-index = 7; rom-file = gpu-passthrough/as21_patched.rom; }
+            ]) ++ [ usb-mouse usb-keyboard ];
+          # Remove unnecessary devices
+          input = null;
+          graphics = null;
+          channel = null;
+          sound = null;
+          audio = null;
+          video = null;
+          redirdev = null;
+        };
+      });
+    in
+    [
+      { definition = inputs.nixvirt.lib.domain.writeXML (final-edit win10-base); }
+      { definition = inputs.nixvirt.lib.domain.writeXML (final-edit (add-gpu win10-base)); }
+    ];
+  virtualisation.libvirtd.scopedHooks.qemu =
+    {
+      start = {
+        enable = true;
+        scope = {
+          objects = [ "win10" ];
+          operations = [ "prepare" ];
+        };
+        source = wrapVars (patchShebangs gpu-passthrough/start.sh) "start.sh";
+        script = null;
+      };
+      stop = {
+        enable = true;
+        scope = {
+          objects = [ "win10" ];
+          operations = [ "release" ];
+        };
+        source = wrapVars (patchShebangs gpu-passthrough/stop.sh) "stop.sh";
+        script = null;
+      };
+    };
+}
