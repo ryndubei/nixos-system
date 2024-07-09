@@ -3,8 +3,6 @@ set -x
 
 # Stop display manager
 systemctl stop display-manager.service
-## Uncomment the following line if you use GDM
-killall gdm-x-session
 
 # Unbind EFI-Framebuffer
 echo efi-framebuffer.0 > /sys/bus/platform/drivers/efi-framebuffer/unbind

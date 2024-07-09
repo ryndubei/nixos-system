@@ -18,7 +18,6 @@
             systemd
             ripgrep
             sd
-            killall
           ];
         };
       in
