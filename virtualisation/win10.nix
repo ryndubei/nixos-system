@@ -165,17 +165,34 @@ in
         cpu = old-xml.cpu // { inherit topology; };
 
         devices = old-xml.devices // {
-          disk = [
-            {
-              type = "file";
-              device = "disk";
-              driver = { name = "qemu"; type = "raw"; };
-              target = { dev = "vda"; bus = "virtio"; };
-              # Path to win10 image:
-              # virtio drivers must be already installed
-              source.file = "/var/lib/libvirt/images/win10.img";
-            }
-          ];
+          disk =
+            let hasIoThreads = (old-xml ? iothreads.count) && (old-xml.iothreads.count > 0);
+            in [
+              {
+                type = "file";
+                device = "disk";
+                driver = {
+                  name = "qemu";
+                  type = "raw";
+                  # native is more CPU efficient
+                  io = "native";
+                  # native is incompatible with host-side caching
+                  cache = "none";
+                  # enable TRIM
+                  discard = "unmap";
+                  # assign IO thread 1 to this disk (IO threads must be assigned
+                  # to a disk to do anything)
+                  iothread = if hasIoThreads then 1 else null;
+                  # number of threads inside guest kernel for IO
+                  queues = if hasIoThreads then 4 else null;
+                };
+                # using virtio-blk
+                target = { dev = "vda"; bus = "virtio"; };
+                # Path to win10 image:
+                # virtio drivers must be already installed
+                source.file = "/var/lib/libvirt/images/win10.img";
+              }
+            ];
           hostdev = (getAttrDefault [ ] "hostdev" old-xml.devices) ++ map mkPciPassthrough
             [
               { source-address = nvme-ssd; bus-index = 8; }
@@ -193,14 +210,14 @@ in
           };
         };
 
-        # Assign isolated CPU cores to the VM and host cores to emulatorpin
         cputune = {
+          # Assign isolated CPU cores to the VM
           vcpupin = lib.lists.imap0 (i: a: { vcpu = i; cpuset = toString a; }) cpus-guest;
+          # Pin remaining cores to emulator and IO threads
           emulatorpin.cpuset = builtins.concatStringsSep "," (map toString cpus-host);
-          # IO threads must be assigned to a disk controller to do anything
-          # iothreadpin = { iothread = 1; cpuset = builtins.concatStringsSep "," (map toString cpus-host); };
+          iothreadpin = { iothread = 1; cpuset = builtins.concatStringsSep "," (map toString cpus-host); };
         };
-        # iothreads.count = 1;
+        iothreads.count = 1;
 
         # Pass through GPU devices and USB mouse and keyboard
         devices = old-xml.devices // {
