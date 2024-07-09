@@ -158,10 +158,6 @@ in
         cpu = old-xml.cpu // { inherit topology; };
 
         devices = old-xml.devices // {
-          # running on windows 10, so no need + 
-          # `libvirt error: unsupported configuration: TPM version '2.0' is not supported`
-          # on activation
-          tpm = null;
           disk = [
             {
               type = "file";
