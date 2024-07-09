@@ -172,7 +172,6 @@ in
           hostdev = (getAttrDefault [ ] "hostdev" old-xml.devices) ++ map mkPciPassthrough
             [
               { source-address = nvme-ssd; bus-index = 8; }
-              { source-address = wifi-controller; bus-index = 1; }
             ];
         };
       });
@@ -195,6 +194,10 @@ in
               # See https://github.com/QaidVoid/Complete-Single-GPU-Passthrough?tab=readme-ov-file#vbios-patching
               { source-address = gpu-video; bus-index = 6; rom-file = gpu-passthrough/as21_patched.rom; }
               { source-address = gpu-audio; bus-index = 7; rom-file = gpu-passthrough/as21_patched.rom; }
+
+              # Passing wifi-controller through here as we normally do not want
+              # to pass it through when running win10-nogpu
+              { source-address = wifi-controller; bus-index = 1; }
             ]) ++ [ usb-mouse usb-keyboard ];
           # Remove unnecessary devices
           input = null;
