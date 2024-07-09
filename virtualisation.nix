@@ -30,6 +30,7 @@
     onBoot = "ignore";
     onShutdown = "shutdown";
     qemu.swtpm.enable = true;
+    qemu.runAsRoot = false;
   };
   programs.virt-manager.enable = true;
 
