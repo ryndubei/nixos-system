@@ -207,6 +207,7 @@ in
           audio = null;
           video = null;
           redirdev = null;
+          interface = null; # since we are already passing through the network card
         };
       });
     in
