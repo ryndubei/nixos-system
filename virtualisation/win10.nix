@@ -9,6 +9,13 @@ let
     cores = 5;
     threads = 2;
   };
+
+  # CPUs to pin: see `lscpu -e` - in this case CPUs 0 and 6 belong to core
+  # 0, so we leave them for the host
+  # We assume that cpus-guest ∩ cpus-host = ∅ and cpus-guest ∪ cpus-host = all CPUs
+  cpus-guest = [ 1 2 3 4 5 7 8 9 10 11 ];
+  cpus-host = [ 0 6 ];
+
   # suppose the IOMMU address is AA:BB.C
   # then domain = 0, bus = AA, slot = BB, function = C
   gpu-video = { domain = 0; bus = 1; slot = 0; function = 0; };
@@ -186,6 +193,15 @@ in
           };
         };
 
+        # Assign isolated CPU cores to the VM and host cores to emulatorpin
+        cputune = {
+          vcpupin = lib.lists.imap0 (i: a: { vcpu = i; cpuset = toString a; }) cpus-guest;
+          emulatorpin.cpuset = builtins.concatStringsSep "," (map toString cpus-host);
+          # IO threads must be assigned to a disk controller to do anything
+          # iothreadpin = { iothread = 1; cpuset = builtins.concatStringsSep "," (map toString cpus-host); };
+        };
+        # iothreads.count = 1;
+
         # Pass through GPU devices and USB mouse and keyboard
         devices = old-xml.devices // {
           hostdev = (map mkPciPassthrough
@@ -216,6 +232,10 @@ in
       { definition = inputs.nixvirt.lib.domain.writeXML (final-edit (add-gpu win10-base)); }
     ];
   virtualisation.libvirtd.scopedHooks.qemu =
+    let
+      host-reserved-cpus = builtins.concatStringsSep "," (map toString cpus-host);
+      all-cpus = builtins.concatStringsSep "," (map toString (cpus-host ++ cpus-guest));
+    in
     {
       start = {
         enable = true;
@@ -234,6 +254,36 @@ in
         };
         source = wrapVars (patchShebangs gpu-passthrough/stop.sh) "stop.sh";
         script = null;
+      };
+      # Isolate host to cpu
+      isol-cpus-start = {
+        enable = true;
+        scope = {
+          objects = [ "win10" ];
+          operations = [ "started" ];
+        };
+        script =
+          ''
+            set -x
+            systemctl set-property --runtime -- system.slice AllowedCPUs=${host-reserved-cpus}
+            systemctl set-property --runtime -- user.slice AllowedCPUs=${host-reserved-cpus}
+            systemctl set-property --runtime -- init.scope AllowedCPUs=${host-reserved-cpus}
+          '';
+      };
+      # Return cpus to host
+      isol-cpus-end = {
+        enable = true;
+        scope = {
+          objects = [ "win10" ];
+          operations = [ "started" ];
+        };
+        script =
+          ''
+            set -x
+            systemctl set-property --runtime -- system.slice AllowedCPUs=${all-cpus}
+            systemctl set-property --runtime -- user.slice AllowedCPUs=${all-cpus}
+            systemctl set-property --runtime -- init.scope AllowedCPUs=${all-cpus}
+          '';
       };
     };
 }
