@@ -47,7 +47,10 @@
                 [
                   ./configuration.nix
                   ./nvidia-laptop.nix
+                  ./virtualisation.nix
                   ./hardware-configuration-laptop.nix
+                  nixv
+                  scopedHooks
                 ];
             };
         };
