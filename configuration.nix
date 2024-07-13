@@ -69,7 +69,10 @@ in
   environment.gnome.excludePackages = (with pkgs.gnome; [
     epiphany # web browser
     geary # email reader
-  ]);
+    gnome-remote-desktop # remote desktop server
+  ]) ++ [
+    pkgs.gnome-connections # remote desktop GUI
+  ];
 
   # Configure keymap in X11
   services.xserver = {
