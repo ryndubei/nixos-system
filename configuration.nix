@@ -27,6 +27,15 @@ in
   boot.initrd.luks.devices."cryptswap".device = "/dev/disk/by-partlabel/cryptswap";
   fileSystems."/mnt/hard_drive".options = [ "x-gvfs-show" ];
 
+  # Assumption: root LUKS device and cryptswap are on an SSD
+
+  # Allow discards (TRIM) for root LUKS device
+  boot.initrd.luks.devices.root.allowDiscards = true;
+
+  # Bypass dm-crypt's workqueues on root and cryptswap: improves SSD performance
+  boot.initrd.luks.devices.root.bypassWorkqueues = true;
+  boot.initrd.luks.devices.cryptswap.bypassWorkqueues = true;
+
   # Enable SSD TRIM
   services.fstrim.enable = true;
 
