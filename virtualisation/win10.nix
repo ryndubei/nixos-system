@@ -23,27 +23,11 @@ let
   nvme-ssd = { domain = 0; bus = 2; slot = 0; function = 0; };
   wifi-controller = { domain = 0; bus = 4; slot = 0; function = 0; };
 
-  usb-mouse = {
-    mode = "subsystem";
-    type = "usb";
-    managed = true;
-    source = {
-      vendor = { id = 9639; };
-      product = { id = 64103; };
-    };
-    address = { type = "usb"; bus = 0; port = 2; };
-  };
+  usb-mouse = mkUsbPassthrough { vendorId = 9639; productId = 64103; port = 2; };
 
-  usb-keyboard = {
-    mode = "subsystem";
-    type = "usb";
-    managed = true;
-    source = {
-      vendor = { id = 6700; };
-      product = { id = 16510; };
-    };
-    address = { type = "usb"; bus = 0; port = 3; };
-  };
+  usb-keyboard = mkUsbPassthrough { vendorId = 6700; productId = 16510; port = 3; };
+
+  usb-cam-mic = mkUsbPassthrough { vendorId = 3141; productId = 25451; port = 4; };
 
   # - Helper functions
 
@@ -101,6 +85,19 @@ let
       source.address = source-address;
       rom.file = rom-file;
       address = { type = "pci"; domain = 0; bus = bus-index; slot = 0; function = 0; };
+    };
+
+  # Formats input as a USB device entry of devices.hostdev
+  mkUsbPassthrough = { vendorId, productId, port }:
+    {
+      mode = "subsystem";
+      type = "usb";
+      managed = true;
+      source = {
+        vendor = { id = vendorId; };
+        product = { id = productId; };
+      };
+      address = { type = "usb"; bus = 0; port = port; };
     };
 
   # If `set.attr` does not exist, returns `default`, otherwise returns `set.attr`
@@ -231,7 +228,7 @@ in
               # Passing wifi-controller through here as we normally do not want
               # to pass it through when running win10-nogpu
               { source-address = wifi-controller; bus-index = 1; }
-            ]) ++ [ usb-mouse usb-keyboard ];
+            ]) ++ [ usb-mouse usb-keyboard usb-cam-mic ];
           # Remove unnecessary devices
           input = null;
           graphics = null;
