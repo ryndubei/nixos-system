@@ -16,8 +16,6 @@
             libvirt
             kmod
             systemd
-            ripgrep
-            sd
           ];
         };
       in
