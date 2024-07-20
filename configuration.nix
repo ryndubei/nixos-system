@@ -11,7 +11,6 @@ in
 
   imports =
     [
-      ./cachix.nix
       ./nvidia.nix
     ];
 
@@ -155,7 +154,6 @@ in
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
-    cachix
   ];
 
   # Install Git
@@ -208,10 +206,14 @@ in
   nix.settings.trusted-public-keys = [
     "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
     "loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk="
+    "ghc-nix.cachix.org-1:wI8l3tirheIpjRnr2OZh6YXXNdK2fVQeOI4SVz/X8nA="
+    "haskell-language-server.cachix.org-1:juFfHrwkOxqIOZShtC4YC1uT1bBcq2RSvC7OMKx0Nz8="
   ];
   nix.settings.substituters = lib.mkAfter [
     "https://cache.iog.io?priority=999"
     "https://cache.zw3rk.com?priority=1000"
+    "https://ghc-nix.cachix.org"
+    "https://haskell-language-server.cachix.org"
   ];
 
 }
