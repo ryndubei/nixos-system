@@ -9,11 +9,6 @@ in
 {
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
-  imports =
-    [
-      ./nvidia.nix
-    ];
-
   # Nix features
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 

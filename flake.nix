@@ -33,6 +33,7 @@
                 [
                   ./configuration.nix
                   ./virtualisation.nix
+                  ./nvidia.nix
                   ./virtualisation/win10.nix
                   ./hardware-configuration-desktop.nix
                   nixv
@@ -46,6 +47,7 @@
               modules =
                 [
                   ./configuration.nix
+                  ./nvidia.nix
                   ./nvidia-laptop.nix
                   ./virtualisation.nix
                   ./hardware-configuration-laptop.nix
