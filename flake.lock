@@ -55,11 +55,11 @@
         "nixpkgs-ovmf": "nixpkgs-ovmf"
       },
       "locked": {
-        "lastModified": 1720554305,
-        "narHash": "sha256-l8wlrkWTFtZ5tGD9sg8BDhYtVW8ldCM8tP/k9z39WkM=",
+        "lastModified": 1721152548,
+        "narHash": "sha256-jHaIoE5o8OBH9Bfe3+QVd31kIuSBmbcpY68hvwgK26E=",
         "owner": "ryndubei",
         "repo": "NixVirt",
-        "rev": "a537e3225e803714a889746e4ea8e35048e4e6b0",
+        "rev": "198e0c4fa9b5b8b05e5fc692c6cd44b4c54b8f12",
         "type": "github"
       },
       "original": {

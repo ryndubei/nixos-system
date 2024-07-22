@@ -96,6 +96,7 @@ let
       source = {
         vendor = { id = vendorId; };
         product = { id = productId; };
+        startupPolicy = "optional";
       };
       address = { type = "usb"; bus = 0; port = port; };
     };
