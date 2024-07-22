@@ -32,6 +32,7 @@
               modules =
                 [
                   ./configuration.nix
+                  ./headless.nix
                   ./virtualisation.nix
                   ./nvidia.nix
                   ./virtualisation/win10.nix
