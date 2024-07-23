@@ -290,7 +290,7 @@ in
         enable = true;
         scope = {
           objects = [ "win10" ];
-          operations = [ "started" ];
+          operations = [ "release" ];
         };
         script =
           ''
