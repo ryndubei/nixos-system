@@ -6,15 +6,15 @@ let
   topology = {
     sockets = 1;
     dies = 1;
-    cores = 5;
+    cores = 6;
     threads = 2;
   };
 
-  # CPUs to pin: see `lscpu -e` - in this case CPUs 0 and 6 belong to core
+  # CPUs to pin: see `lscpu -e` - in this case CPUs 0 and 8 belong to core
   # 0, so we leave them for the host
   # We assume that cpus-guest ∩ cpus-host = ∅ and cpus-guest ∪ cpus-host = all CPUs
-  cpus-guest = [ 1 2 3 4 5 7 8 9 10 11 ];
-  cpus-host = [ 0 6 ];
+  cpus-guest = [ 2 3 4 5 6 7 10 11 12 13 14 15 ];
+  cpus-host = [ 0 1 8 9 ];
 
   # suppose the IOMMU address is AA:BB.C
   # then domain = 0, bus = AA, slot = BB, function = C
