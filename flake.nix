@@ -35,6 +35,7 @@
                   ./headless.nix
                   ./virtualisation.nix
                   ./nvidia.nix
+                  ./nvidia-desktop.nix
                   ./virtualisation/win10.nix
                   ./hardware-configuration-desktop.nix
                   nixv
