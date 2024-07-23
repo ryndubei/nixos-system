@@ -22,7 +22,6 @@ let
   gpu-video = { domain = 0; bus = 1; slot = 0; function = 0; };
   gpu-audio = { domain = 0; bus = 1; slot = 0; function = 1; };
   nvme-ssd = { domain = 0; bus = 2; slot = 0; function = 0; };
-  wifi-controller = { domain = 0; bus = 4; slot = 0; function = 0; };
 
   usb-cam-mic = mkUsbPassthrough { vendorId = 3141; productId = 25451; port = 4; };
 
@@ -202,9 +201,6 @@ in
               { source-address = gpu-video; bus-index = 6; rom-file = gpu-passthrough/as21_patched.rom; }
               { source-address = gpu-audio; bus-index = 7; rom-file = gpu-passthrough/as21_patched.rom; }
 
-              # Passing wifi-controller through here as we normally do not want
-              # to pass it through when running win10-nogpu
-              { source-address = wifi-controller; bus-index = 1; }
             ]) ++ [ usb-cam-mic ];
 
           input = [
@@ -225,7 +221,6 @@ in
           channel = builtins.filter (x: x.type != "spiceport") old-xml.devices.channel;
           video.model.type = "none";
           redirdev = null;
-          interface = null; # since we are already passing through the network card
         };
 
         # Use /dev/kvmfr0 as shared memory for looking-glass
