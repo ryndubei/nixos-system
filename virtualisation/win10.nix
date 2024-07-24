@@ -23,7 +23,7 @@ let
   gpu-audio = { domain = 0; bus = 1; slot = 0; function = 1; };
   nvme-ssd = { domain = 0; bus = 2; slot = 0; function = 0; };
 
-  usb-cam-mic = mkUsbPassthrough { vendorId = 3141; productId = 25451; port = 4; };
+  usb-cam-mic = mkUsbPassthrough { vendorId = 3141; productId = 25451; };
 
   # - Helper functions
 
@@ -45,18 +45,17 @@ let
       });
 
   # Formats input as a PCI device entry of devices.hostdev
-  mkPciPassthrough = { source-address, bus-index, rom-file ? null }:
+  mkPciPassthrough = { source-address, rom-file ? null }:
     {
       mode = "subsystem";
       type = "pci";
       managed = true;
       source.address = source-address;
       rom.file = rom-file;
-      address = { type = "pci"; domain = 0; bus = bus-index; slot = 0; function = 0; };
     };
 
   # Formats input as a USB device entry of devices.hostdev
-  mkUsbPassthrough = { vendorId, productId, port }:
+  mkUsbPassthrough = { vendorId, productId }:
     {
       mode = "subsystem";
       type = "usb";
@@ -66,7 +65,6 @@ let
         product = { id = productId; };
         startupPolicy = "optional";
       };
-      address = { type = "usb"; bus = 0; port = port; };
     };
 
   # If `set.attr` does not exist, returns `default`, otherwise returns `set.attr`
@@ -171,7 +169,7 @@ in
             ];
           hostdev = (getAttrDefault [ ] "hostdev" old-xml.devices) ++ map mkPciPassthrough
             [
-              { source-address = nvme-ssd; bus-index = 8; }
+              { source-address = nvme-ssd; }
             ];
         };
       });
@@ -208,8 +206,8 @@ in
             [
               # A patched ROM is necessary for some NVIDIA cards.
               # See https://github.com/QaidVoid/Complete-Single-GPU-Passthrough?tab=readme-ov-file#vbios-patching
-              { source-address = gpu-video; bus-index = 6; rom-file = gpu-passthrough/as21_patched.rom; }
-              { source-address = gpu-audio; bus-index = 7; rom-file = gpu-passthrough/as21_patched.rom; }
+              { source-address = gpu-video; rom-file = gpu-passthrough/as21_patched.rom; }
+              { source-address = gpu-audio; rom-file = gpu-passthrough/as21_patched.rom; }
 
             ]) ++ [ usb-cam-mic ];
 
