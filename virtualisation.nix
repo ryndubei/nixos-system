@@ -50,5 +50,6 @@
   # Enable the default network
   virtualisation.libvirt.connections."qemu:///system".networks = [
     { definition = virtualisation/default_network.xml; active = true; }
+    { definition = virtualisation/no_net.xml; active = true; }
   ];
 }

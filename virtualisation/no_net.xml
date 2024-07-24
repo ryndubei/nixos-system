@@ -1,0 +1,16 @@
+<network>
+  <name>no-net</name>
+  <uuid>36c0e212-41a7-3866-9231-6bba60f12903</uuid>
+  <forward mode="nat" dev="lo">
+    <nat>
+      <port start="1024" end="65535"/>
+    </nat>
+  </forward>
+  <bridge name="virbr1"/>
+  <mac address="52:54:00:6a:36:d5"/>
+  <ip address="192.168.123.1" netmask="255.255.255.0">
+    <dhcp>
+      <range start="192.168.123.2" end="192.168.123.254"/>
+    </dhcp>
+  </ip>
+</network>

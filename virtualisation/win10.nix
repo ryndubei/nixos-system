@@ -131,6 +131,16 @@ in
         cpu = old-xml.cpu // { inherit topology; };
 
         devices = old-xml.devices // {
+
+          # Add a second network interface without an internet connection
+          interface = [ old-xml.devices.interface ] ++ [
+            {
+              type = "bridge";
+              model.type = "virtio";
+              source.bridge = "virbr1";
+            }
+          ];
+
           disk =
             let hasIoThreads = (old-xml ? iothreads.count) && (old-xml.iothreads.count > 0);
             in [
