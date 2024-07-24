@@ -14,7 +14,8 @@ let
   # 0, so we leave them for the host
   # We assume that cpus-guest ∩ cpus-host = ∅ and cpus-guest ∪ cpus-host = all CPUs
   cpus-guest = [ 2 3 4 5 6 7 10 11 12 13 14 15 ];
-  cpus-host = [ 0 1 8 9 ];
+  # List of lists to account for hyperthreading
+  cpus-host = [ [ 0 8 ] [ 1 9 ] ];
 
   # suppose the IOMMU address is AA:BB.C
   # then domain = 0, bus = AA, slot = BB, function = C
@@ -208,13 +209,20 @@ in
           };
         };
 
-        cputune = {
-          # Assign isolated CPU cores to the VM
-          vcpupin = lib.lists.imap0 (i: a: { vcpu = i; cpuset = toString a; }) cpus-guest;
-          # Pin remaining cores to emulator and IO threads
-          emulatorpin.cpuset = builtins.concatStringsSep "," (map toString cpus-host);
-          iothreadpin = { iothread = 1; cpuset = builtins.concatStringsSep "," (map toString cpus-host); };
-        };
+        cputune =
+          let
+            # First physical cpu core on the iothread, last on emulator.
+            # Any extra cores are left for the host.
+            cpus-iothread = builtins.head cpus-host;
+            cpus-emu = lib.lists.last cpus-host;
+          in
+          {
+            # Assign isolated CPU cores to the VM
+            vcpupin = lib.lists.imap0 (i: a: { vcpu = i; cpuset = toString a; }) cpus-guest;
+            # Pin remaining cores to emulator and IO threads
+            emulatorpin.cpuset = builtins.concatStringsSep "," (map toString cpus-emu);
+            iothreadpin = { iothread = 1; cpuset = builtins.concatStringsSep "," (map toString cpus-iothread); };
+          };
         iothreads.count = 1;
 
         # Pass through GPU devices and USB mouse and keyboard
@@ -248,8 +256,8 @@ in
     ];
   virtualisation.libvirtd.scopedHooks.qemu =
     let
-      host-reserved-cpus = builtins.concatStringsSep "," (map toString cpus-host);
-      all-cpus = builtins.concatStringsSep "," (map toString (cpus-host ++ cpus-guest));
+      host-reserved-cpus = builtins.concatStringsSep "," (map toString (builtins.concatLists cpus-host));
+      all-cpus = builtins.concatStringsSep "," (map toString ((builtins.concatLists cpus-host) ++ cpus-guest));
     in
     {
       start = {
