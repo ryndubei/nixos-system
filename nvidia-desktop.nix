@@ -15,6 +15,14 @@
     "__GLX_VENDOR_LIBRARY_NAME" = "mesa";
   };
 
+  specialisation.unload-nvidia.configuration = {
+    system.nixos.tags = [ "unload-nvidia" ];
+
+    # Keep nvidia driver unloaded at boot:
+    # necessary for dual-GPU passthrough with gnome (gdm?)
+    boot.blacklistedKernelModules = [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" "nvidia_uvm" ];
+  };
+
   hardware.nvidia = {
     # Fine-grained power management. Turns off GPU when not in use.
     # Experimental and only works on modern Nvidia GPUs (Turing or newer).
