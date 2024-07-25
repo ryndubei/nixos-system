@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, ... }:
+{ inputs, pkgs, lib, config, ... }:
 let
   # - Hardware information for the VM
 
@@ -24,10 +24,6 @@ let
   nvme-ssd = { domain = 0; bus = 2; slot = 0; function = 0; };
   wifi-controller = { domain = 0; bus = 4; slot = 0; function = 0; };
 
-  usb-mouse = mkUsbPassthrough { vendorId = 9639; productId = 64103; port = 2; };
-
-  usb-keyboard = mkUsbPassthrough { vendorId = 6700; productId = 16510; port = 3; };
-
   usb-cam-mic = mkUsbPassthrough { vendorId = 3141; productId = 25451; port = 4; };
 
   # - Helper functions
@@ -37,34 +33,6 @@ let
   mkUuid = name: builtins.readFile (pkgs.runCommandNoCC "uuid-of-${name}" { allowSubstitutes = false; } ''
     echo -n $(${pkgs.libuuid}/bin/uuidgen --name ${name} --namespace @oid --md5) > $out 
   '');
-
-  # will fail if targetLen < strLength
-  leftPadString = targetLen: str:
-    let
-      strLength = builtins.stringLength str;
-      padding = builtins.foldl' (a: b: a + b) "" (builtins.genList (x: "0") (targetLen - strLength));
-    in
-    padding + str;
-
-  mkPciAddress = { domain, bus, slot, function }:
-    let
-      domain' = leftPadString 4 (lib.toHexString domain);
-      bus' = leftPadString 2 (lib.toHexString bus);
-      slot' = leftPadString 2 (lib.toHexString slot);
-      function' = leftPadString 1 (lib.toHexString function);
-    in
-    "pci_" + domain' + "_" + bus' + "_" + slot' + "_" + function';
-
-  VIRSH_GPU_VIDEO = mkPciAddress gpu-video;
-  VIRSH_GPU_AUDIO = mkPciAddress gpu-audio;
-
-  # (name -> path to executable) -> name -> deriv. of wrapper setting 
-  # VIRSH_GPU_VIDEO and VIRSH_GPU_AUDIO environment variables
-  wrapVars = mk-exe: name: pkgs.writeShellScript "wrapped-${name}" ''
-    export VIRSH_GPU_VIDEO="${VIRSH_GPU_VIDEO}"
-    export VIRSH_GPU_AUDIO="${VIRSH_GPU_AUDIO}"
-    exec ${mk-exe name} "$@"
-  '';
 
   # (path to script) -> name -> deriv. of script with shebangs patched
   patchShebangs = script-path: name:
@@ -237,17 +205,40 @@ in
               # Passing wifi-controller through here as we normally do not want
               # to pass it through when running win10-nogpu
               { source-address = wifi-controller; bus-index = 1; }
-            ]) ++ [ usb-mouse usb-keyboard usb-cam-mic ];
+            ]) ++ [ usb-cam-mic ];
+
+          input = [
+            { type = "keyboard"; bus = "virtio"; }
+          ];
+
+          # For connecting via looking-glass
+          graphics = {
+            type = "spice";
+            port = 5900;
+            autoport = false;
+            listen.type = "address";
+            image.compression = false;
+            gl.enable = false;
+          };
+
           # Remove unnecessary devices
-          input = null;
-          graphics = null;
-          channel = null;
-          sound = null;
-          audio = null;
-          video = null;
+          channel = builtins.filter (x: x.type != "spiceport") old-xml.devices.channel;
+          video.model.type = "none";
           redirdev = null;
           interface = null; # since we are already passing through the network card
         };
+
+        # Use /dev/kvmfr0 as shared memory for looking-glass
+        qemu-commandline.arg =
+          let
+            size-in-bytes = (builtins.head config.virtualisation.kvmfr.devices).size * 1024 * 1024;
+          in
+          [
+            { value = "-device"; }
+            { value = ''{"driver":"ivshmem-plain","id":"shmem0","memdev":"looking-glass"}''; }
+            { value = "-object"; }
+            { value = ''{"qom-type":"memory-backend-file","id":"looking-glass","mem-path":"/dev/kvmfr0","size":${toString size-in-bytes},"share":true}''; }
+          ];
       });
     in
     [
@@ -266,7 +257,7 @@ in
           objects = [ "win10" ];
           operations = [ "prepare" ];
         };
-        source = wrapVars (patchShebangs gpu-passthrough/start.sh) "start.sh";
+        source = patchShebangs gpu-passthrough/start.sh "start.sh";
         script = null;
       };
       stop = {
@@ -275,7 +266,7 @@ in
           objects = [ "win10" ];
           operations = [ "release" ];
         };
-        source = wrapVars (patchShebangs gpu-passthrough/stop.sh) "stop.sh";
+        source = patchShebangs gpu-passthrough/stop.sh "stop.sh";
         script = null;
       };
       # Isolate host to cpu

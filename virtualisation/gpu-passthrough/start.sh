@@ -1,10 +1,7 @@
 #!/run/current-system/sw/bin/bash
-set -x
+set -exo pipefail
 
-# Stop display manager
-systemctl stop display-manager.service
-
-# Unload all Nvidia drivers
+# Ensure that nvidia drivers are unloaded, or nonzero exit if they are not
 modprobe -r nvidia_drm
 modprobe -r nvidia_modeset
 modprobe -r nvidia_uvm
