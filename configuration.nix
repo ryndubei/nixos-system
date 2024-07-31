@@ -134,6 +134,9 @@ in
   services.flatpak.enable = true;
   services.mullvad-vpn.enable = true;
   services.mullvad-vpn.package = pkgs.mullvad-vpn;
+  services.tailscale.enable = true;
+  # Opt out of sending client logs to Tailscale
+  services.tailscale.extraDaemonFlags = [ "--no-logs-no-support" ];
 
   # Add fish shell
   programs.fish.enable = true;
