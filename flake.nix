@@ -30,6 +30,7 @@
               specialArgs = { inherit inputs; };
               modules =
                 [
+                  { networking.hostName = "nixos-desktop"; }
                   ./configuration.nix
                   ./headless.nix
                   ./virtualisation.nix
@@ -48,6 +49,7 @@
               specialArgs = { inherit inputs; };
               modules =
                 [
+                  { networking.hostName = "nixos-laptop"; }
                   ./configuration.nix
                   ./nvidia.nix
                   ./nvidia-laptop.nix
