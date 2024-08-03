@@ -210,9 +210,13 @@ in
             vcpupin = lib.lists.imap0 (i: a: { vcpu = i; cpuset = toString a; }) cpus-guest;
             # Pin remaining cores to emulator and IO threads
             emulatorpin.cpuset = builtins.concatStringsSep "," (map toString cpus-emu);
-            iothreadpin = map
-              (i: { iothread = i; cpuset = builtins.concatStringsSep "," (map toString cpus-iothread); })
-              (lib.lists.range 1 iothreads.count);
+            iothreadpin =
+              # number of iothreads may /= number of cpus-iothread, but I don't want to
+              # handle these cases right now
+              assert iothreads.count == builtins.length cpus-iothread;
+              map
+                (i: { iothread = i; cpuset = toString (builtins.elemAt cpus-iothread (i - 1)); })
+                (lib.lists.range 1 iothreads.count);
           };
         iothreads.count = 2;
 
