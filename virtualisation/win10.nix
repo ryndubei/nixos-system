@@ -23,8 +23,6 @@ let
   gpu-audio = { domain = 0; bus = 1; slot = 0; function = 1; };
   nvme-ssd = { domain = 0; bus = 2; slot = 0; function = 0; };
 
-  usb-cam-mic = mkUsbPassthrough { vendorId = 3141; productId = 25451; };
-
   # - Helper functions
 
   # Function to generate a UUID from a name
@@ -52,19 +50,6 @@ let
       managed = true;
       source.address = source-address;
       rom.file = rom-file;
-    };
-
-  # Formats input as a USB device entry of devices.hostdev
-  mkUsbPassthrough = { vendorId, productId }:
-    {
-      mode = "subsystem";
-      type = "usb";
-      managed = true;
-      source = {
-        vendor = { id = vendorId; };
-        product = { id = productId; };
-        startupPolicy = "optional";
-      };
     };
 
   # If `set.attr` does not exist, returns `default`, otherwise returns `set.attr`
@@ -229,7 +214,7 @@ in
               { source-address = gpu-video; rom-file = gpu-passthrough/as21_patched.rom; }
               { source-address = gpu-audio; rom-file = gpu-passthrough/as21_patched.rom; }
 
-            ]) ++ [ usb-cam-mic ];
+            ]);
 
           input = [
             { type = "keyboard"; bus = "virtio"; }
