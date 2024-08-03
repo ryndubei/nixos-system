@@ -166,6 +166,20 @@ in
                 # virtio drivers must be already installed
                 source.file = "/var/lib/libvirt/images/win10.img";
               }
+              {
+                type = "file";
+                device = "disk";
+                driver = {
+                  name = "qemu";
+                  type = "raw";
+                  io = "native";
+                  cache = "none";
+                  iothread = if hasIoThreads then 2 else null;
+                  queues = if hasIoThreads then 4 else null;
+                };
+                target = { dev = "vdb"; bus = "virtio"; };
+                source.file = "/mnt/hard_drive/win10-slow.img";
+              }
             ];
           hostdev = (getAttrDefault [ ] "hostdev" old-xml.devices) ++ map mkPciPassthrough
             [
@@ -196,9 +210,11 @@ in
             vcpupin = lib.lists.imap0 (i: a: { vcpu = i; cpuset = toString a; }) cpus-guest;
             # Pin remaining cores to emulator and IO threads
             emulatorpin.cpuset = builtins.concatStringsSep "," (map toString cpus-emu);
-            iothreadpin = { iothread = 1; cpuset = builtins.concatStringsSep "," (map toString cpus-iothread); };
+            iothreadpin = map
+              (i: { iothread = i; cpuset = builtins.concatStringsSep "," (map toString cpus-iothread); })
+              (lib.lists.range 1 iothreads.count);
           };
-        iothreads.count = 1;
+        iothreads.count = 2;
 
         # Pass through GPU devices and USB mouse and keyboard
         devices = old-xml.devices // {
