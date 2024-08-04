@@ -13,13 +13,15 @@
       url = "github:ryndubei/NixVirt";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.4.1";
   };
 
-  outputs = { nixpkgs, nixos-vfio, nixvirt, ... }@inputs:
+  outputs = { nixpkgs, nixos-vfio, nixvirt, nix-flatpak, ... }@inputs:
     let
       lib = nixpkgs.lib;
       nixv = nixvirt.nixosModules.default;
       nvfio = nixos-vfio.nixosModules.default;
+      nflatpak = nix-flatpak.nixosModules.nix-flatpak;
     in
     {
       nixosConfigurations =
@@ -41,6 +43,7 @@
                   ./hardware-configuration-desktop.nix
                   nixv
                   nvfio
+                  nflatpak
                 ];
             };
           nixos-laptop = lib.nixosSystem
@@ -56,6 +59,7 @@
                   ./virtualisation.nix
                   ./hardware-configuration-laptop.nix
                   nixv
+                  nflatpak
                 ];
             };
         };
