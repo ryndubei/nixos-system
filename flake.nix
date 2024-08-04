@@ -41,6 +41,7 @@
                   ./virtualisation/win10.nix
                   ./virtualisation/kvmfr.nix
                   ./hardware-configuration-desktop.nix
+                  ./flatpak.nix
                   nixv
                   nvfio
                   nflatpak
@@ -58,6 +59,7 @@
                   ./nvidia-laptop.nix
                   ./virtualisation.nix
                   ./hardware-configuration-laptop.nix
+                  ./flatpak.nix
                   nixv
                   nflatpak
                 ];
