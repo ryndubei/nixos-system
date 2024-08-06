@@ -17,4 +17,18 @@
       };
     }];
   };
+  # assuming we only need nix-vfio for kvmfr
+  virtualisation.libvirtd.deviceACL = [
+    "/dev/null"
+    "/dev/full"
+    "/dev/zero"
+    "/dev/random"
+    "/dev/urandom"
+    "/dev/ptmx"
+    "/dev/kvm"
+    "/dev/kqemu"
+    "/dev/rtc"
+    "/dev/hpet"
+    "/dev/sev"
+  ];
 }
