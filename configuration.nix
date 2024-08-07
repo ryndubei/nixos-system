@@ -185,7 +185,10 @@ in
 
   # DNS-over-TLS
   # https://docs.quad9.net/Setup_Guides/Linux_and_BSD/Ubuntu_22.04_%28Encrypted%29/
-  networking.nameservers = [ "9.9.9.9" "149.112.112.112" ];
+  networking.nameservers = [
+    "9.9.9.9#dns.quad9.net"
+    "149.112.112.112#dns.quad9.net"
+  ];
 
   services.resolved = {
     enable = true;
