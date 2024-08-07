@@ -191,7 +191,6 @@ in
     enable = true;
     dnssec = "false"; # "the DNSSEC option should not be enabled in systemd-resolved..."
     domains = [ "~." ];
-    fallbackDns = [ "9.9.9.9" "149.112.112.112" ];
     dnsovertls = "true";
   };
 
