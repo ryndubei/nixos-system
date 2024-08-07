@@ -14,14 +14,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.4.1";
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, nixos-vfio, nixvirt, nix-flatpak, ... }@inputs:
+  outputs = { nixpkgs, nixos-vfio, nixvirt, nix-flatpak, lanzaboote, ... }@inputs:
     let
       lib = nixpkgs.lib;
       nixv = nixvirt.nixosModules.default;
       nvfio = nixos-vfio.nixosModules.default;
       nflatpak = nix-flatpak.nixosModules.nix-flatpak;
+      lzbt = lanzaboote.nixosModules.lanzaboote;
     in
     {
       nixosConfigurations =
@@ -45,6 +50,8 @@
                   nixv
                   nvfio
                   nflatpak
+                  lzbt
+                  ./secureboot.nix
                 ];
             };
           nixos-laptop = lib.nixosSystem
@@ -62,6 +69,8 @@
                   ./flatpak.nix
                   nixv
                   nflatpak
+                  lzbt
+                  ./secureboot.nix
                 ];
             };
         };
