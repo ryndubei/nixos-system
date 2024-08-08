@@ -12,7 +12,7 @@ jobs:
     - name: The Determinate Nix Installer
       uses: DeterminateSystems/nix-installer-action@v12
     - name: Update flake.lock
-      run: nix flake lock --update-input nixpkgs
+      run: nix flake lock --update-input nixpkgs --update-input lanzaboote
     - name: Commit files
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
