@@ -42,6 +42,9 @@ in
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # Use mac address randomisation for wifi
+  networking.networkmanager.wifi.macAddress = "random";
+
   # Set your time zone.
   time.timeZone = "Europe/London";
 
