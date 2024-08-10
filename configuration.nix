@@ -130,9 +130,11 @@ in
   #  randomizedDelaySec = "45min";
   #};
 
-  # Misc services
   services.mullvad-vpn.enable = true;
   services.mullvad-vpn.package = pkgs.mullvad-vpn;
+  # mullvad-exclude is unused and therefore disabled
+  services.mullvad-vpn.enableExcludeWrapper = false;
+
   services.tailscale.enable = true;
   # Opt out of sending client logs to Tailscale
   services.tailscale.extraDaemonFlags = [ "--no-logs-no-support" ];
