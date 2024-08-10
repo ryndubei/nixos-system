@@ -190,16 +190,16 @@ in
 
   # DNS-over-TLS
   # https://docs.quad9.net/Setup_Guides/Linux_and_BSD/Ubuntu_22.04_%28Encrypted%29/
-  networking.nameservers = [
-    "9.9.9.9#dns.quad9.net"
-    "149.112.112.112#dns.quad9.net"
-  ];
+  #networking.nameservers = [
+  #  "9.9.9.9#dns.quad9.net"
+  #  "149.112.112.112#dns.quad9.net"
+  #];
 
   services.resolved = {
     enable = true;
-    dnssec = "false"; # "the DNSSEC option should not be enabled in systemd-resolved..."
-    domains = [ "~." ];
-    dnsovertls = "true";
+    # dnssec = "false"; # "the DNSSEC option should not be enabled in systemd-resolved..."
+    # domains = [ "~." ];
+    # dnsovertls = "true";
   };
 
   # haskell.nix and https://github.com/input-output-hk/devx
