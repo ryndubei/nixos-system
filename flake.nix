@@ -68,7 +68,11 @@
               specialArgs = { inherit inputs; };
               modules =
                 [
-                  { networking.hostName = "nixos-laptop"; }
+                  {
+                    networking.hostName = "nixos-laptop";
+                    # Don't advertise hostname to LAN
+                    services.avahi.hostName = "";
+                  }
                   ./configuration.nix
                   ./nvidia.nix
                   ./nvidia-laptop.nix
