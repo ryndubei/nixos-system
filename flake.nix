@@ -52,6 +52,7 @@
                   nflatpak
                   lzbt
                   ./secureboot.nix
+                  ./wifi-desktop.nix
                   {
                     networking.firewall.allowedTCPPorts = [
                       22565 # mince
