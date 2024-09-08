@@ -238,7 +238,6 @@ in
           channel = builtins.filter (x: x.type != "spiceport") old-xml.devices.channel;
           video.model.type = "none";
           redirdev = null;
-          interface = null; # since we are already passing through the network card
         };
 
         # Use /dev/kvmfr0 as shared memory for looking-glass
