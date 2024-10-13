@@ -198,6 +198,7 @@ in
     enable = true;
     domains = [ "~." ];
     dnsovertls = "true";
+    llmnr = "false";
   };
 
   # haskell.nix and https://github.com/input-output-hk/devx
