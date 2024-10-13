@@ -189,14 +189,13 @@ in
   # Documentation: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
 
   # DNS-over-TLS
-  # https://docs.quad9.net/Setup_Guides/Linux_and_BSD/Ubuntu_22.04_%28Encrypted%29/
+  # https://mullvad.net/en/help/dns-over-https-and-dns-over-tls
   networking.nameservers = [
     "194.242.2.2#dns.mullvad.net"
   ];
 
   services.resolved = {
     enable = true;
-    # dnssec = "false"; # "the DNSSEC option should not be enabled in systemd-resolved..."
     domains = [ "~." ];
     dnsovertls = "true";
   };
