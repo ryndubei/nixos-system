@@ -29,7 +29,7 @@ jobs:
       # I do not know of another way to actually force the error than building the
       # derivation.
       run: |
-        nix eval .#homeConfigurations --apply 'builtins.mapAttrs (_n: v: v.activationPackage.drvPath)'
+        nix eval .#nixosConfigurations --apply 'builtins.mapAttrs (_n: v: v.config.system.build.toplevel)'
     - name: Push changes
       uses: ad-m/github-push-action@v0.8.0
       with:
