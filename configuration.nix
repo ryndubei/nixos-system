@@ -201,6 +201,9 @@ in
     llmnr = "false";
   };
 
+  # Incrementally optimise the store when a new path is added
+  nix.settings.auto-optimise-store = true;
+
   # haskell.nix and https://github.com/input-output-hk/devx
   nix.settings.trusted-public-keys = [
     "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
