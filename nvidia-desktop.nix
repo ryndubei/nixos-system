@@ -1,19 +1,10 @@
-{ pkgs, lib, ... }:
+{ lib, ... }:
 
 {
   services.xserver.videoDrivers = lib.mkBefore [ "intel" ];
 
   # Enable GNOME integration for hybrid graphics
   services.switcherooControl.enable = true;
-
-  # Workaround for https://gitlab.gnome.org/GNOME/mutter/-/issues/2969
-  # Wayland GNOME shell insists upon taking up 1MiB of the dGPU
-  # VRAM, preventing the dGPU from powering down without killing
-  # gnome-shell.
-  environment.sessionVariables = {
-    "__EGL_VENDOR_LIBRARY_FILENAMES" = "${pkgs.mesa_drivers}/share/glvnd/egl_vendor.d/50_mesa.json";
-    "__GLX_VENDOR_LIBRARY_NAME" = "mesa";
-  };
 
   specialisation.unload-nvidia.configuration = {
     system.nixos.tags = [ "unload-nvidia" ];

@@ -11,6 +11,9 @@
     nvidiaBusId = "PCI:1:0:0";
   };
 
+  # Disable the open source kernel module (old GPU)
+  hardware.nvidia.open = false;
+
   specialisation = {
     no-dgpu.configuration = {
       system.nixos.tags = [ "no-dgpu" ];
