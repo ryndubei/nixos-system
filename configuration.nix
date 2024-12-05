@@ -72,7 +72,6 @@ in
 
   # Remove certain Gnome packages
   environment.gnome.excludePackages = (with pkgs; [
-    epiphany # web browser
     geary # email reader
     gnome-remote-desktop # remote desktop server
     gnome-connections # remote desktop GUI
