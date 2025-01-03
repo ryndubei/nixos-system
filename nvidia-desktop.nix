@@ -1,7 +1,7 @@
 { lib, ... }:
 
 {
-  services.xserver.videoDrivers = lib.mkBefore [ "intel" ];
+  services.xserver.videoDrivers = lib.mkBefore [ "modesetting" ];
 
   # Enable GNOME integration for hybrid graphics
   services.switcherooControl.enable = true;
