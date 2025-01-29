@@ -208,8 +208,10 @@ in
     "loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk="
     "ghc-nix.cachix.org-1:wI8l3tirheIpjRnr2OZh6YXXNdK2fVQeOI4SVz/X8nA="
     "haskell-language-server.cachix.org-1:juFfHrwkOxqIOZShtC4YC1uT1bBcq2RSvC7OMKx0Nz8="
+    "ros.cachix.org-1:dSyZxI8geDCJrwgvCOHDoAfOm5sV1wCPjBkKL+38Rvo="
   ];
   nix.settings.substituters = lib.mkAfter [
+    "https://ros.cachix.org"
     "https://cache.iog.io?priority=999"
     "https://cache.zw3rk.com?priority=1000"
     "https://ghc-nix.cachix.org"
