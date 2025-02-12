@@ -18,7 +18,8 @@
     no-dgpu.configuration = {
       system.nixos.tags = [ "no-dgpu" ];
 
-      services.xserver.videoDrivers = lib.mkForce [ "modesetting" "fbdev" ]; # the default value
+      services.xserver.videoDrivers =
+        lib.mkForce [ "modesetting" "fbdev" ]; # the default value
 
       hardware.nvidia.modesetting.enable = lib.mkForce false;
       hardware.nvidia.nvidiaSettings = lib.mkForce false;
@@ -40,7 +41,8 @@
         # Remove NVIDIA VGA/3D controller devices
         ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", ATTR{power/control}="auto", ATTR{remove}="1"
       '';
-      boot.blacklistedKernelModules = [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" ];
+      boot.blacklistedKernelModules =
+        [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" ];
     };
   };
 }

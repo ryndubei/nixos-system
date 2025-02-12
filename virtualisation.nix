@@ -7,19 +7,12 @@
 
   # Add packages to use in qemu hooks
   systemd.services.libvirtd = {
-    path =
-      let
-        env = pkgs.buildEnv {
-          name = "qemu-hook-env";
-          paths = with pkgs; [
-            bash
-            libvirt
-            kmod
-            systemd
-          ];
-        };
-      in
-      [ env ];
+    path = let
+      env = pkgs.buildEnv {
+        name = "qemu-hook-env";
+        paths = with pkgs; [ bash libvirt kmod systemd ];
+      };
+    in [ env ];
   };
 
   virtualisation.libvirtd = {
@@ -36,7 +29,13 @@
 
   # Enable the default network
   virtualisation.libvirt.connections."qemu:///system".networks = [
-    { definition = virtualisation/default_network.xml; active = true; }
-    { definition = virtualisation/no_net.xml; active = true; }
+    {
+      definition = virtualisation/default_network.xml;
+      active = true;
+    }
+    {
+      definition = virtualisation/no_net.xml;
+      active = true;
+    }
   ];
 }

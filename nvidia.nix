@@ -31,12 +31,12 @@
   };
 
   # Ensure the NVIDIA flatpak runtime is installed system-wide if Flatpak is enabled
-  services.flatpak.packages =
-    let nvidiaVersion = builtins.replaceStrings [ "." ] [ "-" ] config.hardware.nvidia.package.version;
-    in
-    [
-      "org.freedesktop.Platform.GL.nvidia-${nvidiaVersion}"
-      "org.freedesktop.Platform.GL32.nvidia-${nvidiaVersion}"
-    ];
+  services.flatpak.packages = let
+    nvidiaVersion = builtins.replaceStrings [ "." ] [ "-" ]
+      config.hardware.nvidia.package.version;
+  in [
+    "org.freedesktop.Platform.GL.nvidia-${nvidiaVersion}"
+    "org.freedesktop.Platform.GL32.nvidia-${nvidiaVersion}"
+  ];
 }
 

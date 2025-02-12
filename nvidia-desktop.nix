@@ -11,7 +11,8 @@
 
     # Keep nvidia driver unloaded at boot:
     # necessary for dual-GPU passthrough with gnome (gdm?)
-    boot.blacklistedKernelModules = [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" "nvidia_uvm" ];
+    boot.blacklistedKernelModules =
+      [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" "nvidia_uvm" ];
   };
 
   hardware.nvidia = {
