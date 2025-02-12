@@ -199,6 +199,10 @@ in
     llmnr = "false";
   };
 
+  # Never use NetworkManager-provided DNS
+  networking.networkmanager.dns = lib.mkForce "none";
+  networking.networkmanager.settings.main.systemd-resolved = false;
+
   # Incrementally optimise the store when a new path is added
   nix.settings.auto-optimise-store = true;
 
