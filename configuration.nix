@@ -5,8 +5,7 @@
 { config, pkgs, lib, ... }:
 
 let libvirtEnabled = config.virtualisation.libvirtd.enable;
-in
-{
+in {
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Nix features
@@ -18,7 +17,8 @@ in
 
   # Note that we assume both devices have an encrypted swap partition labelled
   # "cryptswap", and a second drive mounted at /mnt/hard_drive
-  boot.initrd.luks.devices."cryptswap".device = "/dev/disk/by-partlabel/cryptswap";
+  boot.initrd.luks.devices."cryptswap".device =
+    "/dev/disk/by-partlabel/cryptswap";
   fileSystems."/mnt/hard_drive".options = [ "x-gvfs-show" ];
 
   # Assumption: root LUKS device and cryptswap are on an SSD
@@ -148,9 +148,7 @@ in
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    wget
-  ];
+  environment.systemPackages = with pkgs; [ wget ];
 
   # Install Git
   programs.git.enable = true;
@@ -183,14 +181,13 @@ in
   system.stateVersion = "24.05"; # Did you read the comment?
 
   # Enable sync, reboot and remount read-only (see https://bugs.launchpad.net/ubuntu/+source/linux/+bug/194676)
-  boot.kernel.sysctl."kernel.sysrq" = 176; # NixOS default: 16 (only the sync command)
+  boot.kernel.sysctl."kernel.sysrq" =
+    176; # NixOS default: 16 (only the sync command)
   # Documentation: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
 
   # DNS-over-TLS
   # https://mullvad.net/en/help/dns-over-https-and-dns-over-tls
-  networking.nameservers = [
-    "194.242.2.2#dns.mullvad.net"
-  ];
+  networking.nameservers = [ "194.242.2.2#dns.mullvad.net" ];
 
   services.resolved = {
     enable = true;
