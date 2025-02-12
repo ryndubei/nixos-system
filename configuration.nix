@@ -209,6 +209,7 @@ in
     "ghc-nix.cachix.org-1:wI8l3tirheIpjRnr2OZh6YXXNdK2fVQeOI4SVz/X8nA="
     "haskell-language-server.cachix.org-1:juFfHrwkOxqIOZShtC4YC1uT1bBcq2RSvC7OMKx0Nz8="
     "ros.cachix.org-1:dSyZxI8geDCJrwgvCOHDoAfOm5sV1wCPjBkKL+38Rvo="
+    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
   ];
   nix.settings.substituters = lib.mkAfter [
     "https://ros.cachix.org"
@@ -216,6 +217,7 @@ in
     "https://cache.zw3rk.com?priority=1000"
     "https://ghc-nix.cachix.org"
     "https://haskell-language-server.cachix.org"
+    "https://nix-community.cachix.org"
   ];
 
 }
