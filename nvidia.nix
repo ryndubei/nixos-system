@@ -10,6 +10,9 @@
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = [ "nvidia" ];
 
+  # Enable nvidia in containers
+  hardware.nvidia-container-toolkit.enable = true;
+
   hardware.nvidia = {
 
     # Modesetting is required.
