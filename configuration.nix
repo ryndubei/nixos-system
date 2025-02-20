@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, programsdb, ... }:
 
 let libvirtEnabled = config.virtualisation.libvirtd.enable;
 in {
@@ -157,6 +157,11 @@ in {
 
   # Install Git
   programs.git.enable = true;
+
+  # Make command-not-found work with flakes
+  # https://blog.nobbz.dev/2023-02-27-nixos-flakes-command-not-found/
+  environment.etc."programs.sqlite".source = programsdb;
+  programs.command-not-found.dbPath = "/etc/programs.sqlite";
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
