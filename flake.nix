@@ -40,6 +40,7 @@
             ./virtualisation.nix
             ./nvidia.nix
             ./nvidia-desktop.nix
+            ./options/dnsovertls.nix
             ./virtualisation/win10.nix
             ./virtualisation/kvmfr.nix
             ./hardware-configuration-desktop.nix
@@ -72,6 +73,7 @@
             ./configuration.nix
             ./nvidia.nix
             ./nvidia-laptop.nix
+            ./options/dnsovertls.nix
             ./virtualisation.nix
             ./hardware-configuration-laptop.nix
             ./flatpak.nix

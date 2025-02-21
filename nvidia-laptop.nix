@@ -15,7 +15,7 @@
   hardware.nvidia.open = false;
 
   specialisation = {
-    no-dgpu.configuration = {
+    travel.configuration = {
       system.nixos.tags = [ "no-dgpu" ];
 
       services.xserver.videoDrivers =

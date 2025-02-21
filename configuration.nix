@@ -132,6 +132,8 @@ in {
   services.mullvad-vpn.package = pkgs.mullvad-vpn;
   # mullvad-exclude is unused and therefore disabled
   services.mullvad-vpn.enableExcludeWrapper = false;
+  # mullvad requires resolved to be enabled to work
+  services.resolved.enable = true;
 
   services.tailscale.enable = true;
   # Opt out of sending client logs to Tailscale
@@ -185,20 +187,14 @@ in {
     176; # NixOS default: 16 (only the sync command)
   # Documentation: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
 
-  # DNS-over-TLS
-  # https://mullvad.net/en/help/dns-over-https-and-dns-over-tls
-  networking.nameservers = [ "194.242.2.2#dns.mullvad.net" ];
+  custom.dns-over-tls = true;
 
-  services.resolved = {
-    enable = true;
-    domains = [ "~." ];
-    dnsovertls = "true";
-    llmnr = "false";
+  specialisation.travel.configuration = {
+    system.nixos.tags = [ "local-dns" ];
+
+    # must disable dns-over-tls for captive portals
+    custom.dns-over-tls = lib.mkForce false;
   };
-
-  # Never use NetworkManager-provided DNS
-  networking.networkmanager.dns = lib.mkForce "none";
-  networking.networkmanager.settings.main.systemd-resolved = false;
 
   # Incrementally optimise the store when a new path is added
   nix.settings.auto-optimise-store = true;
