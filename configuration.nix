@@ -8,6 +8,9 @@ let libvirtEnabled = config.virtualisation.libvirtd.enable;
 in {
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
+  # Allows 'nixos-enter'ing into aarch64-linux
+  boot.binfmt.preferStaticEmulators = true;
+
   # Nix features
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
