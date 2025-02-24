@@ -21,6 +21,7 @@
       services.xserver.videoDrivers =
         lib.mkForce [ "modesetting" "fbdev" ]; # the default value
 
+      hardware.nvidia-container-toolkit.enable = lib.mkForce false;
       hardware.nvidia.modesetting.enable = lib.mkForce false;
       hardware.nvidia.nvidiaSettings = lib.mkForce false;
       hardware.nvidia.prime.sync.enable = lib.mkForce false;
