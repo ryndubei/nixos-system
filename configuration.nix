@@ -218,8 +218,8 @@ in {
   ];
   nix.settings.substituters = lib.mkAfter [
     "https://ros.cachix.org"
-    "https://cache.iog.io?priority=999"
-    "https://cache.zw3rk.com?priority=1000"
+    "https://cache.iog.io"
+    "https://cache.zw3rk.com"
     "https://ghc-nix.cachix.org"
     "https://haskell-language-server.cachix.org"
     "https://nix-community.cachix.org"
