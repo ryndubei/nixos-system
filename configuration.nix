@@ -216,7 +216,7 @@ in {
     "ros.cachix.org-1:dSyZxI8geDCJrwgvCOHDoAfOm5sV1wCPjBkKL+38Rvo="
     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
   ];
-  nix.settings.substituters = lib.mkAfter [
+  nix.settings.trusted-substituters = [
     "https://ros.cachix.org"
     "https://cache.iog.io"
     "https://cache.zw3rk.com"
