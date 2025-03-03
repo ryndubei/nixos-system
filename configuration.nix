@@ -148,6 +148,9 @@ in {
   # Install firefox.
   programs.firefox.enable = true;
 
+  # Firejail, a sandboxing tool
+  programs.firejail.enable = true;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
