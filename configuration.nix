@@ -218,6 +218,9 @@ in {
     "haskell-language-server.cachix.org-1:juFfHrwkOxqIOZShtC4YC1uT1bBcq2RSvC7OMKx0Nz8="
     "ros.cachix.org-1:dSyZxI8geDCJrwgvCOHDoAfOm5sV1wCPjBkKL+38Rvo="
     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+
+    # SSH substituter cache key
+    "nixos-desktop-1:uw4gx1dFkH4eaoqQjCFhBdw4dOCUD7pDOhxMgnsv8jc="
   ];
   nix.settings.trusted-substituters = [
     "https://ros.cachix.org"
@@ -226,7 +229,13 @@ in {
     "https://ghc-nix.cachix.org"
     "https://haskell-language-server.cachix.org"
     "https://nix-community.cachix.org"
+
+    # SSH substituter
+    "ssh://nix-ssh@nixos-desktop"
   ];
 
+  # Sign all derivations using the local cache key
+  # sudo nix-store --generate-binary-cache-key <NAME> /etc/nix/key.private /etc/nix/key.public
+  nix.settings.extra-secret-key-files = [ "/etc/nix/key.private" ];
 }
 
