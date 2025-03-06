@@ -230,7 +230,7 @@ in {
     "https://haskell-language-server.cachix.org"
     "https://nix-community.cachix.org"
 
-    # SSH substituter (note: key must be owned by root)
+    # SSH substituter
     "ssh://nix-ssh@nixos-desktop"
   ];
 
