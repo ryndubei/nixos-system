@@ -21,5 +21,5 @@ in {
 
   # Serve the Nix store over SSH
   nix.sshServe.enable = true;
-  nix.sshServe.keys = [ LAPTOP_SSH_PUBKEY LAPTOP_SSH_CACHE_PUBKEY ];
+  nix.sshServe.keys = [ LAPTOP_SSH_CACHE_PUBKEY ];
 }
