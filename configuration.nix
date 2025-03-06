@@ -237,5 +237,8 @@ in {
   # Sign all derivations using the local cache key
   # sudo nix-store --generate-binary-cache-key <NAME> /etc/nix/key.private /etc/nix/key.public
   nix.settings.extra-secret-key-files = [ "/etc/nix/key.private" ];
+
+  # Keep build dependencies
+  nix.settings.keep-outputs = true;
 }
 
