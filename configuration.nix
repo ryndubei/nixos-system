@@ -231,7 +231,7 @@ in {
     "https://nix-community.cachix.org"
 
     # SSH substituter
-    "ssh://nix-ssh@nixos-desktop"
+    "ssh://nix-ssh@nixos-desktop?ssh-key=/home/vasilysterekhov/.ssh/local_cache_client"
   ];
 
   # Sign all derivations using the local cache key
