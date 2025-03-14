@@ -198,6 +198,9 @@ in {
     176; # NixOS default: 16 (only the sync command)
   # Documentation: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
 
+  # Reduce swappiness to 10
+  boot.kernel.sysctl."vm.swappiness" = 10;
+
   custom.dns-over-tls = true;
 
   specialisation.travel.configuration = {
