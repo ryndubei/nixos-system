@@ -90,6 +90,7 @@
             nflatpak
             lzbt
             ./secureboot.nix
+            ./sound-laptop.nix
           ];
         };
       };
