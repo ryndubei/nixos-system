@@ -161,6 +161,11 @@ in {
   # Install Git
   programs.git.enable = true;
 
+  # Allow running executables not built for NixOS
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [ libglvnd ];
+  services.envfs.enable = true;
+
   # Make command-not-found work with flakes
   # https://blog.nobbz.dev/2023-02-27-nixos-flakes-command-not-found/
   environment.etc."programs.sqlite".source = programsdb;
