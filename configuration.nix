@@ -141,6 +141,9 @@ in {
   services.tailscale.enable = true;
   # Opt out of sending client logs to Tailscale
   services.tailscale.extraDaemonFlags = [ "--no-logs-no-support" ];
+  # Tailscale breaks wait-online
+  # https://github.com/NixOS/nixpkgs/issues/180175
+  systemd.services.NetworkManager-wait-online.enable = false;
 
   # Add fish shell
   programs.fish.enable = true;
