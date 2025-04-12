@@ -166,7 +166,14 @@ in {
 
   # Allow running executables not built for NixOS
   programs.nix-ld.enable = true;
-  programs.nix-ld.libraries = with pkgs; [ libglvnd ];
+  programs.nix-ld.libraries = with pkgs;
+    [
+      (runCommandNoCCLocal "steam-run-lib" { } ''
+        mkdir $out
+        ln -s ${steam-run-free.fhsenv}/usr/lib64 $out/lib
+        ln -s ${steam-run-free.fhsenv}/usr/include $out/include
+      '')
+    ];
   services.envfs.enable = true;
 
   # Make command-not-found work with flakes
