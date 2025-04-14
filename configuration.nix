@@ -56,6 +56,10 @@ in {
   # Set your time zone.
   time.timeZone = "Europe/London";
 
+  # Location service
+  # https://github.com/NixOS/nixpkgs/issues/321121
+  services.geoclue2.geoProviderUrl = "https://api.beacondb.net/v1/geolocate";
+
   # Select internationalisation properties.
   i18n.defaultLocale = "en_GB.UTF-8";
 
