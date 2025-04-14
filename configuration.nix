@@ -6,6 +6,11 @@
 
 let libvirtEnabled = config.virtualisation.libvirtd.enable;
 in {
+  # Symlink this directory into /run/current-system
+  system.extraSystemBuilderCmds = ''
+    ln -s ${./.} $out/nixos-config
+  '';
+
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Allows 'nixos-enter'ing into aarch64-linux
