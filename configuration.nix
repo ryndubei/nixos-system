@@ -179,7 +179,6 @@ in {
         ln -s ${steam-run-free.fhsenv}/usr/include $out/include
       '')
     ];
-  services.envfs.enable = true;
 
   # Make command-not-found work with flakes
   # https://blog.nobbz.dev/2023-02-27-nixos-flakes-command-not-found/
