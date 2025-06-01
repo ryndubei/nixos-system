@@ -82,6 +82,12 @@ in {
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
+  # Enable Gnome's experimental VRR support
+  services.xserver.desktopManager.gnome.extraGSettingsOverrides = ''
+    [org.gnome.mutter]
+    experimental-features=['variable-refresh-rate']
+  '';
+
   # Remove certain Gnome packages
   environment.gnome.excludePackages = (with pkgs; [
     geary # email reader
