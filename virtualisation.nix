@@ -38,6 +38,4 @@
       active = true;
     }
   ];
-
-  virtualisation.containers.enable = true;
 }
