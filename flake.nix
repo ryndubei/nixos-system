@@ -2,7 +2,7 @@
   description = "System configuration";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-24.11";
+    nixpkgs.url = "nixpkgs/nixos-25.05";
     nixos-vfio = {
       # TODO: as below
       url = "github:ryndubei/nixos-vfio/patch-1";
