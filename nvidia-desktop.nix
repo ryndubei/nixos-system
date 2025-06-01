@@ -15,6 +15,19 @@
       [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" "nvidia_uvm" ];
   };
 
+  # Specialisation for using nvidia without prime offload
+  specialisation.nvidia-only.configuration = {
+    system.nixos.tags = [ "nvidia-only" ];
+
+    services.switcherooControl.enable = lib.mkForce false;
+
+    hardware.nvidia = {
+      powerManagement.finegrained = lib.mkForce false;
+      prime.offload.enable = lib.mkForce false;
+      prime.offload.enableOffloadCmd = lib.mkForce false;
+    };
+  };
+
   hardware.nvidia = {
     # Fine-grained power management. Turns off GPU when not in use.
     # Experimental and only works on modern Nvidia GPUs (Turing or newer).
