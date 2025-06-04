@@ -53,9 +53,6 @@ in {
   # Use mac address randomisation for wifi
   networking.networkmanager.wifi.macAddress = "random";
 
-  # Set your time zone.
-  time.timeZone = "Europe/London";
-
   # Location service
   # https://github.com/NixOS/nixpkgs/issues/321121
   services.geoclue2.geoProviderUrl = "https://api.beacondb.net/v1/geolocate";
