@@ -129,20 +129,6 @@ in {
     packages = [ ];
   };
 
-  # Automatic upgrades
-  #system.autoUpgrade = {
-  #  enable = true;
-  #  flake = inputs.self.outPath;
-  #  operation = "boot";
-  #  flags = [
-  #    "--update-input"
-  #    "nixpkgs"
-  #    "-L" # print build logs
-  #  ];
-  #  dates = "12:00";
-  #  randomizedDelaySec = "45min";
-  #};
-
   services.mullvad-vpn.enable = true;
   services.mullvad-vpn.package = pkgs.mullvad-vpn;
   # mullvad-exclude is unused and therefore disabled
