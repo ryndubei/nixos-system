@@ -214,10 +214,6 @@ in
               # See https://github.com/QaidVoid/Complete-Single-GPU-Passthrough?tab=readme-ov-file#vbios-patching
               { source-address = gpu-video; rom-file = gpu-passthrough/as21_patched.rom; }
               { source-address = gpu-audio; rom-file = gpu-passthrough/as21_patched.rom; }
-
-              # Passing wifi-controller through here as we normally do not want
-              # to pass it through when running win10-nogpu
-              { source-address = wifi-controller; }
             ]);
 
           input = [
