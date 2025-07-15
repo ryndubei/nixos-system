@@ -22,7 +22,6 @@ let
   gpu-video = { domain = 0; bus = 1; slot = 0; function = 0; };
   gpu-audio = { domain = 0; bus = 1; slot = 0; function = 1; };
   nvme-ssd = { domain = 0; bus = 2; slot = 0; function = 0; };
-  wifi-controller = { domain = 0; bus = 4; slot = 0; function = 0; };
 
   # - Helper functions
 
