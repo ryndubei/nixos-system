@@ -1,9 +1,7 @@
 { pkgs, ... }:
 
 {
-  environment.systemPackages = with pkgs; [
-    looking-glass-client
-  ];
+  environment.systemPackages = with pkgs; [ looking-glass-client ];
 
   virtualisation.kvmfr = {
     enable = true;
@@ -12,7 +10,7 @@
       # https://github.com/j-brn/nixos-vfio/issues/85
       # https://looking-glass.io/docs/B7/install_libvirt/#determining-memory
       # (2 ^) . ceiling . logBase 2 $ (3840 * 2160 * 4 * 2 / (1024 * 1024)) + 10
-      size = 128; #MiB
+      size = 128; # MiB
       permissions = {
         user = "qemu-libvirtd";
         group = "libvirtd";
