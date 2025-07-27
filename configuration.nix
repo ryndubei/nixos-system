@@ -156,7 +156,14 @@ in {
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [ wget ];
+  environment.systemPackages = with pkgs; [
+    man-pages
+    man-pages-posix
+    wget
+  ];
+
+  # Enable extra manpages
+  documentation.dev.enable = true;
 
   # Install Git
   programs.git.enable = true;
