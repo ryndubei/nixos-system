@@ -57,6 +57,7 @@
             lzbt
             ./secureboot.nix
             ./wifi-desktop.nix
+            ./wivrn.nix
             {
               networking.firewall.allowedTCPPorts = [
                 9943 # alvr
