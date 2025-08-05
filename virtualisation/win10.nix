@@ -165,9 +165,9 @@ in {
 
           # Add a second network interface without an internet connection
           interface = [ old-xml.devices.interface ] ++ [{
-            type = "bridge";
+            type = "network";
             model.type = "virtio";
-            source.bridge = "virbr1";
+            source.network = "no-net";
           }];
 
           disk = let

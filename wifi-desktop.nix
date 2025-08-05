@@ -23,17 +23,18 @@
 
   networking.networkmanager.unmanaged = [ "wlan-ap0" ];
 
-  networking.interfaces."wlan-ap0".ipv4.addresses = [{
-    address = "192.168.12.1";
+  networking.bridges.br0 = { interfaces = [ ]; };
+  networking.interfaces.br0.ipv4.addresses = [{
+    address = "192.168.123.1";
     prefixLength = 24;
   }];
 
   services.dnsmasq = {
     enable = true;
     settings = {
-      interface = "wlan-ap0";
+      interface = "br0";
       bind-interfaces = true;
-      dhcp-range = [ "192.168.12.10,192.168.12.254,24h" ];
+      dhcp-range = [ "192.168.123.10,192.168.123.254,24h" ];
     };
   };
 
@@ -57,6 +58,7 @@
     settings = {
       # channel + 6 for 80 MHz
       vht_oper_centr_freq_seg0_idx = 155;
+      bridge = "br0";
     };
     wifi4 = {
       enable = true;
