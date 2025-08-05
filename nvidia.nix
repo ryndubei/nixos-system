@@ -26,8 +26,7 @@
     nvidiaSettings = true;
 
     # Driver version
-    # Have to use beta for GNOME to work properly (github.com/NixOS/nixpkgs/issues/353990)
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
   # Ensure the NVIDIA flatpak runtime is installed system-wide if Flatpak is enabled
