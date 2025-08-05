@@ -263,16 +263,8 @@ in {
         # Pass through GPU devices and USB mouse and keyboard
         devices = old-xml.devices // {
           hostdev = (map mkPciPassthrough [
-            # A patched ROM is necessary for some NVIDIA cards.
-            # See https://github.com/QaidVoid/Complete-Single-GPU-Passthrough?tab=readme-ov-file#vbios-patching
-            {
-              source-address = gpu-video;
-              rom-file = gpu-passthrough/as21_patched.rom;
-            }
-            {
-              source-address = gpu-audio;
-              rom-file = gpu-passthrough/as21_patched.rom;
-            }
+            { source-address = gpu-video; }
+            { source-address = gpu-audio; }
           ]);
 
           input = [{
