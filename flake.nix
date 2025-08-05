@@ -60,13 +60,9 @@
             ./wivrn.nix
             {
               networking.firewall.allowedTCPPorts = [
-                9943 # alvr
-                9944 # alvr
                 22565 # mince
               ];
               networking.firewall.allowedUDPPorts = [
-                9943 # alvr
-                9944 # alvr
                 23253 # bg3
               ];
             }
