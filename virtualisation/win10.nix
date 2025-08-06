@@ -321,6 +321,8 @@ in {
       (map toString (builtins.concatLists cpus-host));
     all-cpus = builtins.concatStringsSep ","
       (map toString ((builtins.concatLists cpus-host) ++ cpus-guest));
+    guest-reserved-cpus =
+      builtins.concatStringsSep "," (map toString cpus-guest);
   in {
     start = {
       enable = true;
@@ -349,6 +351,7 @@ in {
       };
       script = ''
         set -x
+        ${config.boot.kernelPackages.cpupower}/bin/cpupower -c ${guest-reserved-cpus} frequency-set -g performance
         systemctl set-property --runtime -- system.slice AllowedCPUs=${host-reserved-cpus}
         systemctl set-property --runtime -- user.slice AllowedCPUs=${host-reserved-cpus}
         systemctl set-property --runtime -- init.scope AllowedCPUs=${host-reserved-cpus}
@@ -366,6 +369,7 @@ in {
         systemctl set-property --runtime -- system.slice AllowedCPUs=${all-cpus}
         systemctl set-property --runtime -- user.slice AllowedCPUs=${all-cpus}
         systemctl set-property --runtime -- init.scope AllowedCPUs=${all-cpus}
+        ${config.boot.kernelPackages.cpupower}/bin/cpupower -c ${guest-reserved-cpus} frequency-set -g powersave
       '';
     };
   };
