@@ -44,5 +44,10 @@
   boot.kernelPackages = pkgs.linuxPackages_6_15;
 
   # Daemon for sharing files between host and guest
-  virtualisation.libvirtd.qemu.vhostUserPackages = [ pkgs.virtiofsd ];
+  virtualisation.libvirtd.qemu.vhostUserPackages = [
+    # pkgs.virtiofsd 🙅
+    # https://gitlab.com/virtio-fs/virtiofsd/-/issues/96
+    # "same guest with same win drivers worked with the C implementation, but it's failing now with the rust one"
+    (pkgs.callPackage pkgs/virtiofsd.nix { })
+  ];
 }

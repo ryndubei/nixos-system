@@ -1,0 +1,12 @@
+diff -ruN vhost/Cargo.toml vhost-patch/Cargo.toml
+--- vhost/Cargo.toml	2025-07-06 13:21:05.943350502 +0700
++++ vhost-patch/Cargo.toml	2025-07-06 13:23:21.366684064 +0700
+@@ -8,6 +8,6 @@
+ 
+ [workspace.dependencies]
+ virtio-bindings = "0.2.1"
+-virtio-queue = "0.14.0"
+-vm-memory = "0.16.0"
++virtio-queue = { path = "../vm-virtio-virtio-queue-v0.14.0/virtio-queue" }
++vm-memory = { path = "../vm-memory-0.16.2" }
+ vmm-sys-util = "0.12.1"

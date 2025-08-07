@@ -1,0 +1,22 @@
+diff -ruN vm-virtio-virtio-queue-v0.14.0/Cargo.toml vm-virtio-queue-patch/Cargo.toml
+--- vm-virtio-virtio-queue-v0.14.0/Cargo.toml	2024-10-21 14:35:22.000000000 +0700
++++ vm-virtio-queue-patch/Cargo.toml	2025-07-06 13:39:14.086685665 +0700
+@@ -15,5 +15,5 @@
+ codegen-units = 1
+ 
+ [workspace.dependencies]
+-vm-memory = "0.16.0"
++vm-memory = { path = "../vm-memory-0.16.2" } 
+ vmm-sys-util = "0.12.1"
+diff -ruN vm-virtio-virtio-queue-v0.14.0/virtio-queue/Cargo.toml vm-virtio-queue-patch/virtio-queue/Cargo.toml
+--- vm-virtio-virtio-queue-v0.14.0/virtio-queue/Cargo.toml	2024-10-21 14:35:22.000000000 +0700
++++ vm-virtio-queue-patch/virtio-queue/Cargo.toml	2025-07-06 13:39:34.326685699 +0700
+@@ -13,7 +13,7 @@
+ test-utils = []
+ 
+ [dependencies]
+-vm-memory = { workspace = true }
++vm-memory = { path = "../../vm-memory-0.16.2", workspace = true }
+ vmm-sys-util = { workspace = true }
+ log = "0.4.17"
+ virtio-bindings = { path="../virtio-bindings", version = "0.2.4" }
