@@ -42,4 +42,7 @@
   # https://www.reddit.com/r/VFIO/comments/1ma1gk1/error_43_after_libvirtqemu_update_nvidia/
   # 6.12 breaks nvidia GPU passthrough with code 43
   boot.kernelPackages = pkgs.linuxPackages_6_15;
+
+  # Daemon for sharing files between host and guest
+  virtualisation.libvirtd.qemu.vhostUserPackages = [ pkgs.virtiofsd ];
 }
