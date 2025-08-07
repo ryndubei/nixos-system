@@ -76,7 +76,7 @@ in {
       name = "win10-nogpu";
       uuid = mkUuid name;
       memory = {
-        count = 11;
+        count = 16;
         unit = "GiB";
       };
       # note: supports only qcow2 here, hence adding disk manually
