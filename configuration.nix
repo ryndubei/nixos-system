@@ -221,11 +221,11 @@ in {
 
   custom.dns-over-tls = true;
 
-  specialisation.travel.configuration = {
-    system.nixos.tags = [ "local-dns" ];
-
-    # must disable dns-over-tls for captive portals
-    custom.dns-over-tls = lib.mkForce false;
+  # Chromium instance that ignores custom DNS settings for logging into captive portals
+  programs.captive-browser = {
+    enable = true;
+    # must specify particular interface if true
+    bindInterface = false;
   };
 
   # Incrementally optimise the store when a new path is added
