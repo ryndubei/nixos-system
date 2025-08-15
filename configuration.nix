@@ -238,6 +238,8 @@ in {
 
     # SSH substituter cache key
     "nixos-desktop-1:uw4gx1dFkH4eaoqQjCFhBdw4dOCUD7pDOhxMgnsv8jc="
+
+    "nixos-laptop-1:gAV7/Xv0mLFFegg7g4XtSag3JNbRe6KUWm6fnlEfhn4="
   ];
   nix.settings.trusted-substituters = [
     "https://ros.cachix.org"
