@@ -156,11 +156,7 @@ in {
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    man-pages
-    man-pages-posix
-    wget
-  ];
+  environment.systemPackages = with pkgs; [ man-pages man-pages-posix wget ];
 
   # Enable extra manpages
   documentation.dev.enable = true;
@@ -256,8 +252,18 @@ in {
   ];
 
   # Sign all derivations using the local cache key
-  # sudo nix-store --generate-binary-cache-key <NAME> /etc/nix/key.private /etc/nix/key.public
   nix.settings.extra-secret-key-files = [ "/etc/nix/key.private" ];
+
+  systemd.services.nix-generate-cache-key = {
+    description = "Generate local Nix cache key, if not present";
+    wantedBy = [ "multi-user.target" ];
+    unitConfig.ConditionPathExists = "!/etc/nix/key.private";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart =
+        "${pkgs.nix}/bin/nix-store --generate-binary-cache-key ${config.networking.hostName}-1 /etc/nix/key.private /etc/nix/key.public";
+    };
+  };
 
   # Keep build dependencies
   nix.settings.keep-outputs = true;
