@@ -23,20 +23,15 @@ in {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Note that we assume both devices have an encrypted swap partition labelled
-  # "cryptswap", and a second drive mounted at /mnt/hard_drive
-  boot.initrd.luks.devices."cryptswap".device =
-    "/dev/disk/by-partlabel/cryptswap";
   fileSystems."/mnt/hard_drive".options = [ "x-gvfs-show" ];
 
-  # Assumption: root LUKS device and cryptswap are on an SSD
+  # Assumption: root LUKS device is on an SSD
 
   # Allow discards (TRIM) for root LUKS device
   boot.initrd.luks.devices.root.allowDiscards = true;
 
-  # Bypass dm-crypt's workqueues on root and cryptswap: improves SSD performance
+  # Bypass dm-crypt's workqueues on root: improves SSD performance
   boot.initrd.luks.devices.root.bypassWorkqueues = true;
-  boot.initrd.luks.devices.cryptswap.bypassWorkqueues = true;
 
   # Enable SSD TRIM
   services.fstrim.enable = true;
