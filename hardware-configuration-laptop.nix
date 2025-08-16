@@ -14,18 +14,18 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/eaef8ebe-0bf0-4c70-ad26-07bc640807bb";
+    { device = "/dev/mapper/cryptroot";
       fsType = "ext4";
     };
 
-  boot.initrd.luks.devices."root".device = "/dev/disk/by-uuid/8695cb34-e997-45fa-92af-1ccf2aa69f44";
+  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/13335fd3-0506-4655-967d-8e6c833dc821";
 
   fileSystems."/mnt/hard_drive" =
-    { device = "/dev/disk/by-uuid/f4d3d952-8b41-4062-8ca5-08dfc729e39b";
+    { device = "/dev/mapper/crypthdd";
       fsType = "ext4";
     };
 
-  boot.initrd.luks.devices."luks-368d0031-073f-421c-bd46-bbee0dabdc98".device = "/dev/disk/by-uuid/368d0031-073f-421c-bd46-bbee0dabdc98";
+  boot.initrd.luks.devices."crypthdd".device = "/dev/disk/by-uuid/368d0031-073f-421c-bd46-bbee0dabdc98";
 
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/7FD8-B929";

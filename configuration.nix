@@ -28,10 +28,10 @@ in {
   # Assumption: root LUKS device is on an SSD
 
   # Allow discards (TRIM) for root LUKS device
-  boot.initrd.luks.devices.root.allowDiscards = true;
+  boot.initrd.luks.devices.cryptroot.allowDiscards = true;
 
   # Bypass dm-crypt's workqueues on root: improves SSD performance
-  boot.initrd.luks.devices.root.bypassWorkqueues = true;
+  boot.initrd.luks.devices.cryptroot.bypassWorkqueues = true;
 
   # Enable SSD TRIM
   services.fstrim.enable = true;
