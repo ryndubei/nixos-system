@@ -33,9 +33,6 @@ in {
   # Bypass dm-crypt's workqueues on root: improves SSD performance
   boot.initrd.luks.devices.cryptroot.bypassWorkqueues = true;
 
-  # Enable SSD TRIM
-  services.fstrim.enable = true;
-
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
