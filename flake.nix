@@ -50,7 +50,6 @@
             ./virtualisation/win10.nix
             ./virtualisation/kvmfr.nix
             ./hardware-configuration-desktop.nix
-            ./fs-desktop.nix
             ./flatpak.nix
             nixv
             nvfio
