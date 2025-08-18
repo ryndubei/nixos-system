@@ -15,10 +15,11 @@
 
   fileSystems."/" =
     { device = "/dev/mapper/cryptroot";
-      fsType = "ext4";
+      fsType = "btrfs";
+      options = [ "subvol=@" "compress-force=zstd:5" "noatime" ];
     };
 
-  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/6715f7a0-361d-4f23-bb17-e70156099569";
+  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/9268e5f1-8ae3-4a4b-b692-b2bcad77b00d";
 
   fileSystems."/mnt/hard_drive" =
     { device = "/dev/mapper/crypthdd";
@@ -28,7 +29,7 @@
   boot.initrd.luks.devices."crypthdd".device = "/dev/disk/by-uuid/84254816-6c5a-41a9-b588-5a608484c9b0";
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/8585-B33A";
+    { device = "/dev/disk/by-uuid/43DD-B223";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
