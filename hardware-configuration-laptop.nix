@@ -17,7 +17,9 @@
   fileSystems."/" =
     { device = "/dev/mapper/cryptroot";
       fsType = "btrfs";
-      options = [ "subvol=@" "compress-force=zstd:5" "noatime" ];
+      # user_subvol_rm_allowed=on allows using btrfs subvolume delete by non root
+      # This is safe because rm can already do this
+      options = [ "subvol=@" "compress-force=zstd:5" "noatime" "user_subvol_rm_allowed" ];
     };
 
   boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/deb2d889-7ae8-42be-986f-3105a0e8c96a";
