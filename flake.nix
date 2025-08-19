@@ -50,6 +50,7 @@
             ./virtualisation/win10.nix
             ./virtualisation/kvmfr.nix
             ./hardware-configuration-desktop.nix
+            ./btrfs.nix
             ./flatpak.nix
             nixv
             nvfio
@@ -86,6 +87,7 @@
             ./options/dnsovertls.nix
             ./virtualisation.nix
             ./hardware-configuration-laptop.nix
+            ./btrfs.nix
             ./flatpak.nix
             nixv
             nflatpak

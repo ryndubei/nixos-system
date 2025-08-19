@@ -16,7 +16,7 @@
   fileSystems."/" =
     { device = "/dev/mapper/cryptroot";
       fsType = "btrfs";
-      options = [ "subvol=@" "compress-force=zstd:5" "noatime" ];
+      options = [ "subvol=@" ];
     };
 
   boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/9268e5f1-8ae3-4a4b-b692-b2bcad77b00d";
