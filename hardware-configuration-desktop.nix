@@ -21,6 +21,12 @@
 
   boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/9268e5f1-8ae3-4a4b-b692-b2bcad77b00d";
 
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/43DD-B223";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
+
   fileSystems."/mnt/hard_drive" =
     { device = "/dev/mapper/crypthdd";
       fsType = "ext4";
@@ -28,11 +34,7 @@
 
   boot.initrd.luks.devices."crypthdd".device = "/dev/disk/by-uuid/84254816-6c5a-41a9-b588-5a608484c9b0";
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/43DD-B223";
-      fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
-    };
+  swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
