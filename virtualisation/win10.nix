@@ -173,52 +173,33 @@ in {
           disk = let
             hasIoThreads = (old-xml ? iothreads.count)
               && (old-xml.iothreads.count > 0);
-          in [
-            {
-              type = "file";
-              device = "disk";
-              driver = {
-                name = "qemu";
-                type = "raw";
-                # native is more CPU efficient
-                io = "native";
-                # native is incompatible with host-side caching
-                cache = "none";
-                # enable TRIM
-                discard = "unmap";
-                # assign IO thread 1 to this disk (IO threads must be assigned
-                # to a disk to do anything)
-                iothread = if hasIoThreads then 1 else null;
-                # number of threads inside guest kernel for IO
-                queues = if hasIoThreads then 4 else null;
-              };
-              # using virtio-blk
-              target = {
-                dev = "vda";
-                bus = "virtio";
-              };
-              # Path to win10 image:
-              # virtio drivers must be already installed
-              source.file = "/var/lib/libvirt/images/win10.img";
-            }
-            {
-              type = "file";
-              device = "disk";
-              driver = {
-                name = "qemu";
-                type = "raw";
-                io = "native";
-                cache = "none";
-                iothread = if hasIoThreads then 2 else null;
-                queues = if hasIoThreads then 4 else null;
-              };
-              target = {
-                dev = "vdb";
-                bus = "virtio";
-              };
-              source.file = "/mnt/hard_drive/win10-slow.img";
-            }
-          ];
+          in [{
+            type = "file";
+            device = "disk";
+            driver = {
+              name = "qemu";
+              type = "raw";
+              # native is more CPU efficient
+              io = "native";
+              # native is incompatible with host-side caching
+              cache = "none";
+              # enable TRIM
+              discard = "unmap";
+              # assign IO thread 1 to this disk (IO threads must be assigned
+              # to a disk to do anything)
+              iothread = if hasIoThreads then 1 else null;
+              # number of threads inside guest kernel for IO
+              queues = if hasIoThreads then 4 else null;
+            };
+            # using virtio-blk
+            target = {
+              dev = "vda";
+              bus = "virtio";
+            };
+            # Path to win10 image:
+            # virtio drivers must be already installed
+            source.file = "/var/lib/libvirt/images/win10.img";
+          }];
           hostdev = (getAttrDefault [ ] "hostdev" old-xml.devices)
             ++ map mkPciPassthrough [{ source-address = nvme-ssd; }];
         };
@@ -249,16 +230,12 @@ in {
           # Pin remaining cores to emulator and IO threads
           emulatorpin.cpuset =
             builtins.concatStringsSep "," (map toString cpus-emu);
-          iothreadpin =
-            # number of iothreads may /= number of cpus-iothread, but I don't want to
-            # handle these cases right now
-            assert iothreads.count == builtins.length cpus-iothread;
-            map (i: {
-              iothread = i;
-              cpuset = toString (builtins.elemAt cpus-iothread (i - 1));
-            }) (lib.lists.range 1 iothreads.count);
+          iothreadpin = {
+            iothread = 1;
+            cpuset = builtins.concatStringsSep "," (map toString cpus-iothread);
+          };
         };
-        iothreads.count = 2;
+        iothreads.count = 1;
 
         # Pass through GPU devices and USB mouse and keyboard
         devices = old-xml.devices // {
