@@ -31,6 +31,13 @@ let
     slot = 0;
     function = 1;
   };
+  nvme-ssd = {
+    domain = 0;
+    bus = 2;
+    slot = 0;
+    function = 0;
+  };
+
   # - Helper functions
 
   # Function to generate a UUID from a name
@@ -60,6 +67,9 @@ let
     rom.file = rom-file;
   };
 
+  # If `set.attr` does not exist, returns `default`, otherwise returns `set.attr`
+  getAttrDefault = default: attr: set:
+    if builtins.hasAttr attr set then set.${attr} else default;
 in {
   virtualisation.libvirt.connections."qemu:///system".domains = let
     win10-base = (inputs.nixvirt.lib.domain.templates.windows rec {
@@ -84,11 +94,6 @@ in {
           placement = "static";
           count = topology.sockets * topology.dies * topology.cores
             * topology.threads;
-        };
-
-        memoryBacking = {
-          source.type = "memfd";
-          access.mode = "shared";
         };
 
         # Device information for calming down EAC
@@ -195,13 +200,8 @@ in {
             # virtio drivers must be already installed
             source.file = "/var/lib/libvirt/images/win10.img";
           }];
-          filesystem = {
-            type = "mount";
-            accessmode = "passthrough";
-            driver.type = "virtiofs";
-            source.dir = "/media/nvme_drive/@data/vasilysterekhov/vm_shared";
-            target.dir = "nvme_drive";
-          };
+          hostdev = (getAttrDefault [ ] "hostdev" old-xml.devices)
+            ++ map mkPciPassthrough [{ source-address = nvme-ssd; }];
         };
       });
 

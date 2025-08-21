@@ -34,14 +34,6 @@
 
   boot.initrd.luks.devices."crypthdd".device = "/dev/disk/by-uuid/84254816-6c5a-41a9-b588-5a608484c9b0";
 
-  fileSystems."/media/nvme_drive" = {
-    device = "/dev/mapper/cryptnvme";
-    fsType = "btrfs";
-    options = [ "noatime" "compress-force=zstd:5" "user_subvol_rm_allowed" ];
-  };
-
-  boot.initrd.luks.devices."cryptnvme".device = "/dev/disk/by-uuid/70dc2b90-3f16-40de-9140-d66a755fe121";
-
   swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
