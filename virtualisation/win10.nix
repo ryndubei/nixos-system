@@ -87,7 +87,7 @@ in {
         };
 
         memoryBacking = {
-          source.type = "memfd";
+          hugepages = { };
           access.mode = "shared";
         };
 
@@ -318,6 +318,19 @@ in {
       };
       source = patchShebangs gpu-passthrough/stop.sh "stop.sh";
       script = null;
+    };
+    # Request memory defragmentation so hugepages allocation is more
+    # likely to succeed
+    memory-defrag = {
+      enable = true;
+      scope = {
+        objects = [ "win10" ];
+        operations = [ "prepare" ];
+      };
+      script = ''
+        set -x
+        echo 1 > /proc/sys/vm/compact_memory
+      '';
     };
     # Isolate host to cpu
     isol-cpus-start = {
