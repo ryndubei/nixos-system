@@ -132,7 +132,7 @@ in {
   services.tailscale.extraDaemonFlags = [ "--no-logs-no-support" ];
   # Tailscale breaks wait-online
   # https://github.com/NixOS/nixpkgs/issues/180175
-  systemd.services.NetworkManager-wait-online.enable = false;
+  systemd.services.tailscaled.after = [ "NetworkManager-wait-online.service" ];
 
   # Add fish shell
   programs.fish.enable = true;
