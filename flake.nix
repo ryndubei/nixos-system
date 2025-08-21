@@ -49,7 +49,7 @@
             ./options/dnsovertls.nix
             ./virtualisation/win10.nix
             ./virtualisation/kvmfr.nix
-            ./hardware-configuration-desktop.nix
+            ./hardware/generated/hardware-configuration-desktop.nix
             ./btrfs.nix
             ./flatpak.nix
             nixv
@@ -86,14 +86,14 @@
             ./nvidia-laptop.nix
             ./options/dnsovertls.nix
             ./virtualisation.nix
-            ./hardware-configuration-laptop.nix
+            ./hardware/generated/hardware-configuration-laptop.nix
             ./btrfs.nix
             ./flatpak.nix
             nixv
             nflatpak
             lzbt
             ./secureboot.nix
-            ./sound-laptop.nix
+            ./hardware/sound-laptop.nix
           ];
         };
       };
