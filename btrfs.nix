@@ -20,5 +20,23 @@ in {
     "/nix" = mkSubvol "@nix";
     "/tmp" = mkSubvol "@tmp";
     "/var/tmp" = mkSubvol "@var_tmp";
+    "/snapshots" = mkSubvol "@snapshots";
+    "/mnt/cryptroot" = mkSubvol "/";
+  };
+
+  services.btrbk.instances."btrbk" = {
+    onCalendar = "hourly";
+    settings = {
+      volume."/mnt/cryptroot" = {
+        snapshot_preserve = "7d"; # keep daily snapshots for the last 7 days
+        snapshot_preserve_min = "1d"; # keep hourly snapshots for 1 day
+        subvolume = {
+          "@" = { };
+          "@home" = { };
+          "@srv" = { };
+        };
+        snapshot_dir = "@snapshots/btrbk";
+      };
+    };
   };
 }
