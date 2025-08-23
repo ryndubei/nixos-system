@@ -3,7 +3,7 @@
 # See https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md
 {
   environment.systemPackages = [
-    # `sbctl create-keys` to create and place the keys in /etc/secureboot
+    # `sbctl create-keys` to create and place the keys in /var/lib/sbctl
     #
     # `sbctl enroll-keys` to enroll the keys _after_ enabling Secure Boot in BIOS
     #   and entering secure boot setup mode.
@@ -19,6 +19,6 @@
 
   boot.lanzaboote = {
     enable = true;
-    pkiBundle = "/etc/secureboot";
+    pkiBundle = "/var/lib/sbctl";
   };
 }
