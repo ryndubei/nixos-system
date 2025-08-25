@@ -2,8 +2,10 @@
 { inputs, ... }:
 
 {
-  nixpkgs.overlays = (k: p: {
-    unstable = assert p ? unstable == false;
-      import inputs.nixpkgs-unstable { inherit (p) system; };
-  });
+  nixpkgs.overlays = [
+    (k: p: {
+      unstable = assert p ? unstable == false;
+        import inputs.nixpkgs-unstable { inherit (p) system; };
+    })
+  ];
 }

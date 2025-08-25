@@ -47,4 +47,7 @@ in {
     extraOptions = [ "--loadavg-target" "2.0" ];
     verbosity = "crit";
   };
+
+  # no 0.11 on 25.05 yet
+  nixpkgs.overlays = [ (k: p: { bees = p.unstable.bees; }) ];
 }
