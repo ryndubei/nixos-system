@@ -15,7 +15,7 @@ jobs:
         # nix-installer version using Nix 2.21
         source-tag: "v0.19.1"
     - name: Update flake.lock
-      run: nix flake lock --update-input nixpkgs --update-input lanzaboote
+      run: nix flake lock --update-input nixpkgs --update-input lanzaboote --update-input nixpkgs-unstable
     - name: Commit files
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"

@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-25.05";
+    nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
     nixos-vfio = {
       # TODO: as below
       url = "github:ryndubei/nixos-vfio/patch-1";
@@ -59,6 +60,7 @@
             ./secureboot.nix
             ./wifi-desktop.nix
             ./wivrn.nix
+            ./unstable.nix
             {
               networking.firewall.allowedTCPPorts = [
                 22565 # mince
@@ -95,6 +97,7 @@
             ./secureboot.nix
             ./hardware/sound-laptop.nix
             ./hardware/hdd-laptop.nix
+            ./unstable.nix
           ];
         };
       };
