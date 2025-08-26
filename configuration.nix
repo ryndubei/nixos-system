@@ -120,6 +120,8 @@ in {
     packages = [ ];
   };
 
+  security.pam.enableFscrypt = true;
+
   services.mullvad-vpn.enable = true;
   services.mullvad-vpn.package = pkgs.mullvad-vpn;
   # mullvad-exclude is unused and therefore disabled
