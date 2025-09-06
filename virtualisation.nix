@@ -28,16 +28,10 @@
   virtualisation.libvirt.enable = true;
 
   # Enable the default network
-  virtualisation.libvirt.connections."qemu:///system".networks = [
-    {
-      definition = virtualisation/default_network.xml;
-      active = true;
-    }
-    {
-      definition = virtualisation/no_net.xml;
-      active = true;
-    }
-  ];
+  virtualisation.libvirt.connections."qemu:///system".networks = [{
+    definition = virtualisation/default_network.xml;
+    active = true;
+  }];
 
   # https://www.reddit.com/r/VFIO/comments/1ma1gk1/error_43_after_libvirtqemu_update_nvidia/
   # 6.12 breaks nvidia GPU passthrough with code 43
