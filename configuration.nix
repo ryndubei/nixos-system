@@ -83,6 +83,11 @@ in {
     gnome-connections # remote desktop GUI
   ]);
 
+  # A micro-compositor for games and video players, installed system-wide to
+  # improve performance via CAP_SYS_NICE
+  programs.gamescope.enable = true;
+  programs.gamescope.capSysNice = true;
+
   # Configure keymap in X11
   services.xserver = {
     xkb.layout = "gb";
