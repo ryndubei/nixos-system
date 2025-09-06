@@ -9,6 +9,8 @@
   boot.binfmt.preferStaticEmulators = true;
 
   environment.systemPackages = with pkgs; [
+    compsize
+    btdu
     man-pages
     man-pages-posix
     wget
