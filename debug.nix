@@ -8,7 +8,12 @@
   # Allows 'nixos-enter'ing into aarch64-linux
   boot.binfmt.preferStaticEmulators = true;
 
-  environment.systemPackages = with pkgs; [ man-pages man-pages-posix wget ];
+  environment.systemPackages = with pkgs; [
+    man-pages
+    man-pages-posix
+    wget
+    wavemon
+  ];
 
   # Enable extra manpages
   documentation.dev.enable = true;
