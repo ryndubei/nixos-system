@@ -42,6 +42,7 @@
           };
           modules = [
             { networking.hostName = "nixos-desktop"; }
+            ./debug.nix
             ./configuration.nix
             ./headless.nix
             ./virtualisation.nix
@@ -83,6 +84,7 @@
               # Don't advertise hostname to LAN
               services.avahi.hostName = "";
             }
+            ./debug.nix
             ./configuration.nix
             ./nvidia.nix
             ./nvidia-laptop.nix

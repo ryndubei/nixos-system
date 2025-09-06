@@ -11,11 +11,6 @@ in {
     ln -s ${./.} $out/nixos-config
   '';
 
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-
-  # Allows 'nixos-enter'ing into aarch64-linux
-  boot.binfmt.preferStaticEmulators = true;
-
   # Nix features
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -152,13 +147,6 @@ in {
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [ man-pages man-pages-posix wget ];
-
-  # Enable extra manpages
-  documentation.dev.enable = true;
 
   # Install Git
   programs.git.enable = true;
