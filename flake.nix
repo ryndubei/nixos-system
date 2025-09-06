@@ -59,7 +59,7 @@
             nflatpak
             lzbt
             ./secureboot.nix
-            ./wifi-desktop.nix
+            ./hardware/wifi-desktop.nix
             ./wivrn.nix
             ./unstable.nix
             {
