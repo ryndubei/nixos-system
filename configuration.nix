@@ -129,6 +129,13 @@ in {
   # mullvad requires resolved to be enabled to work
   services.resolved.enable = true;
 
+  services.tailscale.enable = true;
+  # Opt out of sending client logs to Tailscale
+  services.tailscale.extraDaemonFlags = [ "--no-logs-no-support" ];
+  # Tailscale breaks wait-online
+  # https://github.com/NixOS/nixpkgs/issues/180175
+  systemd.services.tailscaled.after = [ "NetworkManager-wait-online.service" ];
+
   # Add fish shell
   programs.fish.enable = true;
 

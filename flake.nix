@@ -44,6 +44,7 @@
             { networking.hostName = "nixos-desktop"; }
             ./debug.nix
             ./configuration.nix
+            ./headless.nix
             ./virtualisation.nix
             ./nvidia.nix
             ./nvidia-desktop.nix
