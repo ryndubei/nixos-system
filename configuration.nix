@@ -132,6 +132,8 @@ in {
   services.tailscale.enable = true;
   # Opt out of sending client logs to Tailscale
   services.tailscale.extraDaemonFlags = [ "--no-logs-no-support" ];
+  # https://github.com/NixOS/nixpkgs/issues/438765
+  services.tailscale.package = pkgs.unstable.tailscale;
   # Tailscale breaks wait-online
   # https://github.com/NixOS/nixpkgs/issues/180175
   systemd.services.tailscaled.after = [ "NetworkManager-wait-online.service" ];
