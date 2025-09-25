@@ -48,7 +48,7 @@
             ./virtualisation.nix
             ./nvidia.nix
             ./nvidia-desktop.nix
-            ./options/dnsovertls.nix
+            ./dnsovertls.nix
             ./virtualisation/win10.nix
             ./virtualisation/kvmfr.nix
             ./hardware/generated/hardware-configuration-desktop.nix
@@ -88,7 +88,7 @@
             ./configuration.nix
             ./nvidia.nix
             ./nvidia-laptop.nix
-            ./options/dnsovertls.nix
+            ./dnsovertls.nix
             ./virtualisation.nix
             ./hardware/generated/hardware-configuration-laptop.nix
             ./btrfs.nix

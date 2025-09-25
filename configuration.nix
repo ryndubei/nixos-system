@@ -207,8 +207,6 @@ in {
   # Reduce swappiness to 10
   boot.kernel.sysctl."vm.swappiness" = 10;
 
-  custom.dns-over-tls = true;
-
   # Chromium instance that ignores custom DNS settings for logging into captive portals
   programs.captive-browser = {
     enable = true;
