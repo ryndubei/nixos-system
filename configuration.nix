@@ -78,6 +78,9 @@ in {
     gnome-connections # remote desktop GUI
   ]);
 
+  # Daemon for updating firmware (needed for Device Security section in Gnome Settings)
+  services.fwupd.enable = true;
+
   # A micro-compositor for games and video players, installed system-wide to
   # improve performance via CAP_SYS_NICE
   programs.gamescope.enable = true;
