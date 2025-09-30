@@ -40,10 +40,6 @@ in {
   # Use mac address randomisation for wifi
   networking.networkmanager.wifi.macAddress = "random";
 
-  # Location service
-  # https://github.com/NixOS/nixpkgs/issues/321121
-  services.geoclue2.geoProviderUrl = "https://api.beacondb.net/v1/geolocate";
-
   # Select internationalisation properties.
   i18n.defaultLocale = "en_GB.UTF-8";
 
