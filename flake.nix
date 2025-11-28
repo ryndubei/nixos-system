@@ -23,8 +23,8 @@
     fps.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs =
-    { nixpkgs, nixos-vfio, nixvirt, nix-flatpak, lanzaboote, fps, ... }@inputs:
+  outputs = { nixpkgs, nixos-vfio, nixvirt, nix-flatpak, lanzaboote, fps
+    , nixos-hardware, ... }@inputs:
     let
       lib = nixpkgs.lib;
       nixv = nixvirt.nixosModules.default;
@@ -98,6 +98,7 @@
             lzbt
             ./secureboot.nix
             ./unstable.nix
+            nixos-hardware.nixosModules.framework-13-7040-amd
           ];
         };
       };
