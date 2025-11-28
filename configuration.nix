@@ -18,8 +18,6 @@ in {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  fileSystems."/mnt/hard_drive".options = [ "x-gvfs-show" ];
-
   # Assumption: root LUKS device is on an SSD
 
   # Allow discards (TRIM) for root LUKS device

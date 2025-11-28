@@ -97,8 +97,6 @@
             nflatpak
             lzbt
             ./secureboot.nix
-            ./hardware/sound-laptop.nix
-            ./hardware/hdd-laptop.nix
             ./unstable.nix
           ];
         };

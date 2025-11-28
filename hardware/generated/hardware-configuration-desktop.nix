@@ -30,6 +30,7 @@
   fileSystems."/mnt/hard_drive" =
     { device = "/dev/mapper/crypthdd";
       fsType = "ext4";
+      options = [ "x-gvfs-show" ];
     };
 
   boot.initrd.luks.devices."crypthdd".device = "/dev/disk/by-uuid/84254816-6c5a-41a9-b588-5a608484c9b0";
