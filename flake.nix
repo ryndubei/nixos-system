@@ -46,8 +46,8 @@
             ./configuration.nix
             ./headless.nix
             ./virtualisation.nix
-            ./nvidia.nix
-            ./nvidia-desktop.nix
+            ./hardware/nvidia.nix
+            ./hardware/nvidia-desktop.nix
             ./dnsovertls.nix
             ./virtualisation/win10.nix
             ./virtualisation/kvmfr.nix
@@ -86,8 +86,6 @@
             }
             ./debug.nix
             ./configuration.nix
-            ./nvidia.nix
-            ./nvidia-laptop.nix
             ./dnsovertls.nix
             ./virtualisation.nix
             ./hardware/generated/hardware-configuration-laptop.nix
