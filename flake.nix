@@ -89,7 +89,6 @@
             ./dnsovertls.nix
             ./virtualisation.nix
             ./hardware/generated/hardware-configuration-laptop.nix
-            ./hardware/framework.nix
             ./btrfs.nix
             ./flatpak.nix
             nixv
