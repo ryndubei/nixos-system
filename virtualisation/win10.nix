@@ -44,7 +44,7 @@ let
   # (is it wasteful that this gets recorded in the nix store?)
   mkUuid = name:
     builtins.readFile
-    (pkgs.runCommandNoCC "uuid-of-${name}" { allowSubstitutes = false; } ''
+    (pkgs.runCommand "uuid-of-${name}" { allowSubstitutes = false; } ''
       echo -n $(${pkgs.libuuid}/bin/uuidgen --name ${name} --namespace @oid --md5) > $out 
     '');
 

@@ -7,7 +7,7 @@
 let libvirtEnabled = config.virtualisation.libvirtd.enable;
 in {
   # Symlink this directory into /run/current-system
-  system.extraSystemBuilderCmds = ''
+  system.systemBuilderCommands = ''
     ln -s ${./.} $out/nixos-config
   '';
 
@@ -151,7 +151,7 @@ in {
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs;
     [
-      (runCommandNoCCLocal "steam-run-lib" { } ''
+      (runCommandLocal "steam-run-lib" { } ''
         mkdir $out
         ln -s ${steam-run-free.fhsenv}/usr/lib64 $out/lib
         ln -s ${steam-run-free.fhsenv}/usr/include $out/include
