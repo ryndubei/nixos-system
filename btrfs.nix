@@ -48,9 +48,6 @@ in {
     verbosity = "crit";
   };
 
-  # no 0.11 on 25.05 yet
-  nixpkgs.overlays = [ (k: p: { bees = p.unstable.bees; }) ];
-
   services.udisks2.settings."mount_options.conf" = {
     defaults = {
       # Defaults for automounted btrfs filesystems
