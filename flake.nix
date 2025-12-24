@@ -77,11 +77,7 @@
             programsdb = getProgramsdb system;
           };
           modules = [
-            {
-              networking.hostName = "nixos-laptop";
-              # Don't advertise hostname to LAN
-              services.avahi.hostName = "";
-            }
+            { networking.hostName = "nixos-laptop"; }
             ./debug.nix
             ./configuration.nix
             ./dnsovertls.nix
