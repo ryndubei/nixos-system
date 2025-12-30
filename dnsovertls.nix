@@ -10,6 +10,8 @@
     enable = true;
     domains = [ "~." ];
     dnsovertls = "true";
+    dnssec = "true";
+    fallbackDns = [ "194.242.2.2#dns.mullvad.net" ];
   };
 
   # Never use NetworkManager-provided DNS
