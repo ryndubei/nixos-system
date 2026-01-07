@@ -80,7 +80,6 @@
             { networking.hostName = "nixos-laptop"; }
             ./debug.nix
             ./configuration.nix
-            ./dnsovertls.nix
             ./virtualisation.nix
             ./hardware/generated/hardware-configuration-laptop.nix
             ./btrfs.nix
