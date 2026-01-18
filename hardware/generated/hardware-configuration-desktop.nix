@@ -27,14 +27,6 @@
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
-  fileSystems."/mnt/hard_drive" =
-    { device = "/dev/mapper/crypthdd";
-      fsType = "ext4";
-      options = [ "x-gvfs-show" ];
-    };
-
-  boot.initrd.luks.devices."crypthdd".device = "/dev/disk/by-uuid/84254816-6c5a-41a9-b588-5a608484c9b0";
-
   swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
