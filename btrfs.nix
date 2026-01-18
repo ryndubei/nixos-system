@@ -42,7 +42,7 @@ in {
 
   services.beesd.filesystems.root = {
     spec = "/dev/mapper/cryptroot";
-    hashTableSizeMB = 128;
+    hashTableSizeMB = 512;
     workDir = "@beeshome";
     extraOptions = [ "--loadavg-target" "2.0" ];
     verbosity = "crit";
