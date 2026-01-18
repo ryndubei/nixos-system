@@ -19,10 +19,10 @@
       options = [ "subvol=@" ];
     };
 
-  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/9268e5f1-8ae3-4a4b-b692-b2bcad77b00d";
+  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/c1cc81c0-6750-4954-b722-e65f2d7d8ae4";
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/43DD-B223";
+    { device = "/dev/disk/by-uuid/28AA-6219";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
