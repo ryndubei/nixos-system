@@ -33,7 +33,7 @@ let
   };
   nvme-ssd = {
     domain = 0;
-    bus = 2;
+    bus = 3;
     slot = 0;
     function = 0;
   };
