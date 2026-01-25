@@ -31,12 +31,6 @@ let
     slot = 0;
     function = 1;
   };
-  nvme-ssd = {
-    domain = 0;
-    bus = 3;
-    slot = 0;
-    function = 0;
-  };
 
   # - Helper functions
 
@@ -66,10 +60,6 @@ let
     source.address = source-address;
     rom.file = rom-file;
   };
-
-  # If `set.attr` does not exist, returns `default`, otherwise returns `set.attr`
-  getAttrDefault = default: attr: set:
-    if builtins.hasAttr attr set then set.${attr} else default;
 in {
   virtualisation.libvirt.connections."qemu:///system".domains = let
     win10-base = (inputs.nixvirt.lib.domain.templates.windows rec {
@@ -207,8 +197,6 @@ in {
                 "/dev/disk/by-id/ata-Samsung_SSD_860_EVO_500GB_S4XBNF0N945488X";
             }
           ];
-          hostdev = (getAttrDefault [ ] "hostdev" old-xml.devices)
-            ++ map mkPciPassthrough [{ source-address = nvme-ssd; }];
         };
       });
 
