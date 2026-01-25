@@ -53,6 +53,7 @@
             ./hardware/generated/hardware-configuration-desktop.nix
             ./btrfs.nix
             ./flatpak.nix
+            ./hardware/hdd-desktop.nix
             nixv
             nvfio
             nflatpak

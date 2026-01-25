@@ -12,25 +12,12 @@
     options = [ "x-gvfs-show" "nofail" ];
   };
 
-  boot.initrd.kernelModules =
-    [ "dm-cache" "dm-cache-smq" "dm-cache-mq" "dm-cache-cleaner" ];
-  boot.kernelModules = [
-    "dm-cache"
-    "dm-cache-smq"
-    "dm-cache-mq"
-    "dm-cache-cleaner"
-    "dm-persistent-data"
-    "dm-bio-prison"
-    "dm-clone"
-    "dm-crypt"
-    "dm-writecache"
-    "dm-mirror"
-    "dm-snapshot"
-  ];
+  boot.initrd.kernelModules = [ "dm-cache-default" ];
 
   # Only enabled for the HDD. Root does not need it because root
   # is on BTRFS with discard=async
   services.fstrim.enable = true;
 
+  # cache_check warning
   services.lvm.boot.thin.enable = true;
 }
