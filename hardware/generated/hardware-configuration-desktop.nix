@@ -21,14 +21,6 @@
 
   boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/c1cc81c0-6750-4954-b722-e65f2d7d8ae4";
 
-  boot.initrd.luks.devices."crypthdd".device = "/dev/disk/by-uuid/09068a96-5b36-4754-94b6-a1c2f52d3efe";
-
-  fileSystems."/mnt/hard_drive" =
-    { device = "/dev/mapper/crypthdd";
-      fsType = "ext4";
-      options = [ "x-gvfs-show" "nofail" ];
-    };
-
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/28AA-6219";
       fsType = "vfat";
