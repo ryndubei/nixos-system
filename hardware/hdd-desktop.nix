@@ -3,7 +3,7 @@
   # we will fail to boot. So they are in crypttab instead.
   environment.etc.crypttab.text = ''
     # SMR drive, so discards are necessary
-    crypthdd UUID=3c0aae60-e015-4c03-a736-0d66f66ebc7b /etc/secrets/keyfiles/smr_hdd_keyfile.key discard,nofail
+    crypthdd UUID=aeff52a8-1998-4bc7-bb81-ed93b6eaa652 /etc/secrets/keyfiles/smr_hdd_keyfile.key discard,nofail
   '';
 
   fileSystems."/mnt/hard_drive" = {
