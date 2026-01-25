@@ -166,33 +166,47 @@ in {
           disk = let
             hasIoThreads = (old-xml ? iothreads.count)
               && (old-xml.iothreads.count > 0);
-          in [{
-            type = "file";
-            device = "disk";
-            driver = {
-              name = "qemu";
-              type = "raw";
-              # native is more CPU efficient
-              io = "native";
-              # native is incompatible with host-side caching
-              cache = "none";
-              # enable TRIM
-              discard = "unmap";
-              # assign IO thread 1 to this disk (IO threads must be assigned
-              # to a disk to do anything)
-              iothread = if hasIoThreads then 1 else null;
-              # number of threads inside guest kernel for IO
-              queues = if hasIoThreads then 4 else null;
-            };
-            # using virtio-blk
-            target = {
-              dev = "vda";
-              bus = "virtio";
-            };
-            # Path to win10 image:
-            # virtio drivers must be already installed
-            source.file = "/var/lib/libvirt/images/win10.img";
-          }];
+          in [
+            {
+              type = "file";
+              device = "disk";
+              driver = {
+                name = "qemu";
+                type = "raw";
+                io = "native";
+                cache = "none";
+                discard = "unmap";
+                iothread = if hasIoThreads then 1 else null;
+                queues = if hasIoThreads then 4 else null;
+              };
+              target = {
+                dev = "vda";
+                bus = "virtio";
+              };
+              # Path to win10 image:
+              # virtio drivers must be already installed
+              source.file = "/var/lib/libvirt/images/win10.img";
+            }
+            {
+              type = "block";
+              device = "disk";
+              driver = {
+                name = "qemu";
+                type = "raw";
+                io = "native";
+                cache = "none";
+                discard = "unmap";
+                iothread = if hasIoThreads then 2 else null;
+                queues = if hasIoThreads then 4 else null;
+              };
+              target = {
+                dev = "vdb";
+                bus = "virtio";
+              };
+              source.dev =
+                "/dev/disk/by-id/ata-Samsung_SSD_860_EVO_500GB_S4XBNF0N945488X";
+            }
+          ];
           hostdev = (getAttrDefault [ ] "hostdev" old-xml.devices)
             ++ map mkPciPassthrough [{ source-address = nvme-ssd; }];
         };
@@ -210,7 +224,7 @@ in {
         };
 
         cputune = let
-          # First physical cpu core on the iothread, last on emulator.
+          # First physical cpu core on the iothreads, last on emulator.
           # Any extra cores are left for the host.
           cpus-iothread = builtins.head cpus-host;
           cpus-emu = lib.lists.last cpus-host;
@@ -223,12 +237,20 @@ in {
           # Pin remaining cores to emulator and IO threads
           emulatorpin.cpuset =
             builtins.concatStringsSep "," (map toString cpus-emu);
-          iothreadpin = {
-            iothread = 1;
-            cpuset = builtins.concatStringsSep "," (map toString cpus-iothread);
-          };
+          iothreadpin = [
+            {
+              iothread = 1;
+              cpuset =
+                builtins.concatStringsSep "," (map toString cpus-iothread);
+            }
+            {
+              iothread = 2;
+              cpuset =
+                builtins.concatStringsSep "," (map toString cpus-iothread);
+            }
+          ];
         };
-        iothreads.count = 1;
+        iothreads.count = 2;
 
         # Pass through GPU devices and USB mouse and keyboard
         devices = old-xml.devices // {
