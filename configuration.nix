@@ -204,9 +204,6 @@ in {
     176; # NixOS default: 16 (only the sync command)
   # Documentation: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
 
-  # Reduce swappiness to 10
-  boot.kernel.sysctl."vm.swappiness" = 10;
-
   # Chromium instance that ignores custom DNS settings for logging into captive portals
   programs.captive-browser = {
     enable = true;
@@ -261,5 +258,10 @@ in {
   nix.settings.keep-outputs = true;
 
   zramSwap.enable = true;
+  # https://wiki.archlinux.org/title/Zram#Optimizing_swap_on_zram
+  boot.kernel.sysctl."vm.swappiness" = 180;
+  boot.kernel.sysctl."vm.watermark_boost_factor" = 0;
+  boot.kernel.sysctl."vm.watermark_scale_factor" = 125;
+  boot.kernel.sysctl."vm.page-cluster" = 0;
 }
 
