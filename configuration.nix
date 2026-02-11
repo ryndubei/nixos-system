@@ -259,5 +259,7 @@ in {
 
   # Keep build dependencies
   nix.settings.keep-outputs = true;
+
+  zramSwap.enable = true;
 }
 
