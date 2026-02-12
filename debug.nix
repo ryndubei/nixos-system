@@ -11,6 +11,7 @@
   environment.systemPackages = with pkgs; [
     compsize
     btdu
+    lsof
     man-pages
     man-pages-posix
     wget
