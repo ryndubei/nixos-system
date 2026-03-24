@@ -47,7 +47,6 @@
             ./virtualisation.nix
             ./hardware/nvidia.nix
             ./hardware/nvidia-desktop.nix
-            ./dnsovertls.nix
             ./virtualisation/win10.nix
             ./virtualisation/kvmfr.nix
             ./hardware/generated/hardware-configuration-desktop.nix
