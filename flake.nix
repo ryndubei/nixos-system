@@ -60,6 +60,7 @@
             ./secureboot.nix
             ./hardware/wifi-desktop.nix
             ./wivrn.nix
+            ({ pkgs, ... }: { boot.kernelPackages = pkgs.linuxPackages_6_18; })
             {
               networking.firewall.allowedTCPPorts = [
                 22565 # mince
