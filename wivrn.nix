@@ -4,8 +4,6 @@
   services.wivrn = {
     enable = true;
 
-    defaultRuntime = true;
-
     openFirewall = true;
 
     # CUDA required for nvenc
