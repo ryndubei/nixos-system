@@ -69,6 +69,8 @@ in {
     gnome-connections # remote desktop GUI
   ]);
 
+  services.xserver.wacom.enable = true;
+
   # https://github.com/NixOS/nixpkgs/issues/195936#issuecomment-1278954466
   environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 =
     lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" [
