@@ -16,6 +16,8 @@
     man-pages-posix
     wget
     wavemon
+    wirelesstools
+    iw
   ];
 
   # Enable extra manpages
