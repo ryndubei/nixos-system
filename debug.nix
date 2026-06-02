@@ -18,6 +18,7 @@
     wavemon
     wirelesstools
     iw
+    inetutils
   ];
 
   # Enable extra manpages
