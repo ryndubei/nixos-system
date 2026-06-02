@@ -28,10 +28,16 @@
   virtualisation.libvirt.enable = true;
 
   # Enable the default network
-  virtualisation.libvirt.connections."qemu:///system".networks = [{
-    definition = virtualisation/default_network.xml;
-    active = true;
-  }];
+  virtualisation.libvirt.connections."qemu:///system".networks = [
+    {
+      definition = virtualisation/default_network.xml;
+      active = true;
+    }
+    {
+      definition = virtualisation/no_net.xml;
+      active = true;
+    }
+  ];
 
   # Daemon for sharing files between host and guest
   virtualisation.libvirtd.qemu.vhostUserPackages = [
