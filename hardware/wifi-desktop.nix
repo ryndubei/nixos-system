@@ -8,13 +8,13 @@
 
   networking.wlanInterfaces = {
     "wlan-station0" = {
-      device = "wlp4s0";
+      device = "wlp5s0";
       # station also requires a manually set MAC address to work
       # (fails to connect with mac inherited from wlp4s0)
       mac = "02:00:00:00:00:00";
     };
     "wlan-ap0" = {
-      device = "wlp4s0";
+      device = "wlp5s0";
       mac = "02:00:00:00:00:01";
     };
   };
