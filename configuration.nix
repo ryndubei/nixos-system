@@ -57,12 +57,6 @@ in {
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
 
-  # Enable Gnome's experimental VRR support
-  services.desktopManager.gnome.extraGSettingsOverrides = ''
-    [org.gnome.mutter]
-    experimental-features=['variable-refresh-rate']
-  '';
-
   # Remove certain Gnome packages
   environment.gnome.excludePackages = (with pkgs; [
     gnome-remote-desktop # remote desktop server
