@@ -8,14 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
-    - name: The Determinate Nix Installer
-      uses: DeterminateSystems/nix-installer-action@v12
+      uses: actions/checkout@v5
+    - name: Install Nix
+      uses: cachix/install-nix-action@v31
       with:
-        # nix-installer version using Nix 2.21
-        source-tag: "v0.19.1"
+        github_access_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Update flake.lock
-      run: nix flake lock --update-input nixpkgs --update-input lanzaboote --update-input nixpkgs-unstable
+      run: nix flake update nixpkgs lanzaboote nixpkgs-unstable
     - name: Commit files
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -23,13 +22,8 @@ jobs:
         git add flake.lock
         git commit -m "Update flake.lock" || true
     - name: Check that changes evaluate
-      # This will not work in Nix >= 2.22 because of https://github.com/NixOS/nix/pull/10200 -
-      # errors while evaluating the configuration will not be propagated, only printed and
-      # the exit code will remain at 0 no matter what.
-      # I do not know of another way to actually force the error than building the
-      # derivation.
       run: |
-        nix eval .#nixosConfigurations --apply 'builtins.mapAttrs (_n: v: v.config.system.build.toplevel.out)'
+        nix flake check
     - name: Push changes
       uses: ad-m/github-push-action@v0.8.0
       with:
