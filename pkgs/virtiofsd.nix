@@ -4,25 +4,31 @@
 
 let
   vhost-src = pkgs.applyPatches {
-    src = fetchGit {
-      url = "https://github.com/rust-vmm/vhost.git";
+    src = pkgs.fetchFromGitHub {
+      owner = "rust-vmm";
+      repo = "vhost";
       rev = "875f679ca8a38e38161d106f08568b1618beb953";
+      hash = "sha256-f2ieH1rETvdKywP5GFX79Td6vbfZ7EdTrYuu/fnVMZc=";
     };
     patches = [ ./vhost.patch ];
     name = "vhost";
   };
   vm-memory-src = pkgs.applyPatches {
-    src = fetchGit {
-      url = "https://github.com/rust-vmm/vm-memory.git";
+    src = pkgs.fetchFromGitHub {
+      owner = "rust-vmm";
+      repo = "vm-memory";
       rev = "36238bc74e9806d9e2efe5eb8d6b0643a1add5e4";
+      hash = "sha256-H1OYuvbgMHfBAyIPFPnIYOVO8xh1sihsVPFXemDw1Oc=";
     };
     patches = [ ./vm-memory.patch ];
     name = "vm-memory-0.16.2";
   };
   virtio-queue = pkgs.applyPatches {
-    src = fetchGit {
-      url = "https://github.com/rust-vmm/vm-virtio.git";
+    src = pkgs.fetchFromGitHub {
+      owner = "rust-vmm";
+      repo = "vm-virtio";
       rev = "6724256082041b7c65e48fcbd6ae60e99ceda773";
+      hash = "sha256-h1OCAiNwW1lL9/URLP8AeXnBLb8KgOXroolzPLU3jf4=";
     };
     patches = [ ./vm-virtio-queue.patch ];
     name = "vm-virtio-virtio-queue-v0.14.0";
