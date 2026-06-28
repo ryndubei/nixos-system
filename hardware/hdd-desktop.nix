@@ -9,6 +9,9 @@
   fileSystems."/mnt/hard_drive" = {
     device = "/dev/mapper/crypthdd";
     fsType = "ext4";
-    options = [ "x-gvfs-show" "nofail" ];
+    options = [
+      "x-gvfs-show"
+      "nofail"
+    ];
   };
 }

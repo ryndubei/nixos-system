@@ -2,17 +2,28 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, programsdb, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  programsdb,
+  ...
+}:
 
-let libvirtEnabled = config.virtualisation.libvirtd.enable;
-in {
+let
+  libvirtEnabled = config.virtualisation.libvirtd.enable;
+in
+{
   # Symlink this directory into /run/current-system
   system.systemBuilderCommands = ''
     ln -s ${./.} $out/nixos-config
   '';
 
   # Nix features
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -58,20 +69,24 @@ in {
   services.desktopManager.gnome.enable = true;
 
   # Remove certain Gnome packages
-  environment.gnome.excludePackages = (with pkgs; [
-    gnome-remote-desktop # remote desktop server
-    gnome-connections # remote desktop GUI
-  ]);
+  environment.gnome.excludePackages = (
+    with pkgs;
+    [
+      gnome-remote-desktop # remote desktop server
+      gnome-connections # remote desktop GUI
+    ]
+  );
 
   services.xserver.wacom.enable = true;
 
   # https://github.com/NixOS/nixpkgs/issues/195936#issuecomment-1278954466
   environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 =
-    lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" [
-      pkgs.gst_all_1.gst-plugins-good
-      pkgs.gst_all_1.gst-plugins-bad
-      pkgs.gst_all_1.gst-plugins-ugly
-    ];
+    lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0"
+      [
+        pkgs.gst_all_1.gst-plugins-good
+        pkgs.gst_all_1.gst-plugins-bad
+        pkgs.gst_all_1.gst-plugins-ugly
+      ];
 
   # Daemon for updating firmware (needed for Device Security section in Gnome Settings)
   services.fwupd.enable = true;
@@ -113,8 +128,11 @@ in {
   users.users.vasilysterekhov = {
     isNormalUser = true;
     description = "Vasily Sterekhov";
-    extraGroups = [ "networkmanager" "wheel" ]
-      ++ (lib.optional libvirtEnabled "libvirtd");
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ]
+    ++ (lib.optional libvirtEnabled "libvirtd");
     packages = [ ];
   };
 
@@ -153,14 +171,13 @@ in {
 
   # Allow running executables not built for NixOS
   programs.nix-ld.enable = true;
-  programs.nix-ld.libraries = with pkgs;
-    [
-      (runCommandLocal "steam-run-lib" { } ''
-        mkdir $out
-        ln -s ${steam-run-free.fhsenv}/usr/lib64 $out/lib
-        ln -s ${steam-run-free.fhsenv}/usr/include $out/include
-      '')
-    ];
+  programs.nix-ld.libraries = with pkgs; [
+    (runCommandLocal "steam-run-lib" { } ''
+      mkdir $out
+      ln -s ${steam-run-free.fhsenv}/usr/lib64 $out/lib
+      ln -s ${steam-run-free.fhsenv}/usr/include $out/include
+    '')
+  ];
 
   # Make command-not-found work with flakes
   # https://blog.nobbz.dev/2023-02-27-nixos-flakes-command-not-found/
@@ -196,8 +213,7 @@ in {
   system.stateVersion = "24.05"; # Did you read the comment?
 
   # Enable sync, reboot and remount read-only (see https://bugs.launchpad.net/ubuntu/+source/linux/+bug/194676)
-  boot.kernel.sysctl."kernel.sysrq" =
-    176; # NixOS default: 16 (only the sync command)
+  boot.kernel.sysctl."kernel.sysrq" = 176; # NixOS default: 16 (only the sync command)
   # Documentation: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
 
   # Chromium instance that ignores custom DNS settings for logging into captive portals
@@ -245,8 +261,7 @@ in {
     unitConfig.ConditionPathExists = "!/etc/nix/key.private";
     serviceConfig = {
       Type = "oneshot";
-      ExecStart =
-        "${pkgs.nix}/bin/nix-store --generate-binary-cache-key ${config.networking.hostName}-1 /etc/nix/key.private /etc/nix/key.public";
+      ExecStart = "${pkgs.nix}/bin/nix-store --generate-binary-cache-key ${config.networking.hostName}-1 /etc/nix/key.private /etc/nix/key.public";
     };
   };
 
@@ -260,4 +275,3 @@ in {
   boot.kernel.sysctl."vm.watermark_scale_factor" = 125;
   boot.kernel.sysctl."vm.page-cluster" = 0;
 }
-

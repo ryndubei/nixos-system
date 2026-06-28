@@ -11,8 +11,13 @@
 
     # Keep nvidia driver unloaded at boot:
     # necessary for dual-GPU passthrough with gnome (gdm?)
-    boot.blacklistedKernelModules =
-      [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" "nvidia_uvm" ];
+    boot.blacklistedKernelModules = [
+      "nouveau"
+      "nvidia"
+      "nvidia_drm"
+      "nvidia_modeset"
+      "nvidia_uvm"
+    ];
   };
 
   # Specialisation for using nvidia without prime offload
@@ -35,9 +40,9 @@
 
     # Use the NVidia open source kernel module (not to be confused with the
     # independent third-party "nouveau" open source driver).
-    # Support is limited to the Turing and later architectures. Full list of 
-    # supported GPUs is at: 
-    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
+    # Support is limited to the Turing and later architectures. Full list of
+    # supported GPUs is at:
+    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
     # Only available from driver 515.43.04+
     # Currently alpha-quality/buggy, so false is currently the recommended setting.
     open = true;

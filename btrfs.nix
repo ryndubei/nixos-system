@@ -9,7 +9,8 @@ let
     fsType = "btrfs";
     options = [ "subvol=${name}" ] ++ subvolumeOptions;
   };
-in {
+in
+{
   services.btrfs.autoScrub.enable = true;
 
   fileSystems."/".options = subvolumeOptions;
@@ -44,14 +45,20 @@ in {
     spec = "/dev/mapper/cryptroot";
     hashTableSizeMB = 512;
     workDir = "@beeshome";
-    extraOptions = [ "--loadavg-target" "2.0" ];
+    extraOptions = [
+      "--loadavg-target"
+      "2.0"
+    ];
     verbosity = "crit";
   };
 
   services.udisks2.settings."mount_options.conf" = {
     defaults = {
       # Defaults for automounted btrfs filesystems
-      btrfs_defaults = [ "compress-force=zstd:5" "noatime" ];
+      btrfs_defaults = [
+        "compress-force=zstd:5"
+        "noatime"
+      ];
     };
   };
 }

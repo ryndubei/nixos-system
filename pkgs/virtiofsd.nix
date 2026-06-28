@@ -33,9 +33,15 @@ let
     patches = [ ./vm-virtio-queue.patch ];
     name = "vm-virtio-virtio-queue-v0.14.0";
   };
-in pkgs.virtiofsd.overrideAttrs (orig: {
+in
+pkgs.virtiofsd.overrideAttrs (orig: {
   patches = orig.patches ++ [ ./virtiofsd.patch ];
-  srcs = [ orig.src vhost-src vm-memory-src virtio-queue ];
+  srcs = [
+    orig.src
+    vhost-src
+    vm-memory-src
+    virtio-queue
+  ];
   sourceRoot = ".";
   # 'source' is the directory where 'orig.src' is unpacked to by default
   postUnpack = ''

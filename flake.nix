@@ -22,8 +22,17 @@
     fps.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { nixpkgs, nixos-vfio, nixvirt, nix-flatpak, lanzaboote, fps
-    , nixos-hardware, ... }@inputs:
+  outputs =
+    {
+      nixpkgs,
+      nixos-vfio,
+      nixvirt,
+      nix-flatpak,
+      lanzaboote,
+      fps,
+      nixos-hardware,
+      ...
+    }@inputs:
     let
       lib = nixpkgs.lib;
       nixv = nixvirt.nixosModules.default;
@@ -31,7 +40,8 @@
       nflatpak = nix-flatpak.nixosModules.nix-flatpak;
       lzbt = lanzaboote.nixosModules.lanzaboote;
       getProgramsdb = system: fps.packages.${system}.programs-sqlite;
-    in {
+    in
+    {
       nixosConfigurations = {
         nixos-desktop = lib.nixosSystem rec {
           system = "x86_64-linux";

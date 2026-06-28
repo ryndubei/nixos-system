@@ -2,17 +2,30 @@
 
 {
   # set kernel params for virtualisation
-  boot.kernelParams = [ "intel_iommu=on" "iommu=pt" ];
-  boot.kernelModules = [ "kvm-intel" "vfio-pci" ];
+  boot.kernelParams = [
+    "intel_iommu=on"
+    "iommu=pt"
+  ];
+  boot.kernelModules = [
+    "kvm-intel"
+    "vfio-pci"
+  ];
 
   # Add packages to use in qemu hooks
   systemd.services.libvirtd = {
-    path = let
-      env = pkgs.buildEnv {
-        name = "qemu-hook-env";
-        paths = with pkgs; [ bash libvirt kmod systemd ];
-      };
-    in [ env ];
+    path =
+      let
+        env = pkgs.buildEnv {
+          name = "qemu-hook-env";
+          paths = with pkgs; [
+            bash
+            libvirt
+            kmod
+            systemd
+          ];
+        };
+      in
+      [ env ];
   };
 
   virtualisation.libvirtd = {
