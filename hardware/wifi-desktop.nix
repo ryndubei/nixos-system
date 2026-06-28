@@ -42,6 +42,8 @@
 
   # Enable hostapd
   services.hostapd.enable = true;
+  # Disable autostart of hostapd.service
+  systemd.services.hostapd.wantedBy = [];
   services.hostapd.radios.wlan-ap0 = {
     band = "5g";
     # must match the channel of the wifi network connected to by wlan-station0
