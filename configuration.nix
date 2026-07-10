@@ -49,9 +49,10 @@ in
   # Use mac address randomisation for wifi
   networking.networkmanager.wifi.macAddress = "random";
 
-  # Install l2tp for university vpn
+  # university vpn plugins
   networking.networkmanager.plugins = with pkgs; [
     networkmanager-l2tp
+    networkmanager-openvpn
   ];
 
   # Select internationalisation properties.
