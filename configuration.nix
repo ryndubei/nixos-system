@@ -49,6 +49,11 @@ in
   # Use mac address randomisation for wifi
   networking.networkmanager.wifi.macAddress = "random";
 
+  # Install l2tp for university vpn
+  networking.networkmanager.plugins = with pkgs; [
+    networkmanager-l2tp
+  ];
+
   # Select internationalisation properties.
   i18n.defaultLocale = "en_GB.UTF-8";
 
