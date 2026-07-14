@@ -163,9 +163,6 @@ in
   # Add fish shell
   programs.fish.enable = true;
 
-  # Install firefox.
-  programs.firefox.enable = true;
-
   # Firejail, a sandboxing tool
   programs.firejail.enable = true;
 
