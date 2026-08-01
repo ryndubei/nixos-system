@@ -19,6 +19,7 @@
     wirelesstools
     iw
     inetutils
+    dig
   ];
 
   # Enable extra manpages
