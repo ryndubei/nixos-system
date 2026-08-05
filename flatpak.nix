@@ -23,7 +23,7 @@ let
   # Note that `flatpak pin` is currently unnecessary for non-runtime packages,
   # but it doesn't cause any harm to add them in as a side-effect either.
   updateFlatpakPins = pkgs.writeShellScript "update-flatpak-pins" ''
-    set -euo pipefail
+    set -euxo pipefail
 
     if [ -f '${statePath}' ]; then
       OLD_STATE=$(${pkgs.coreutils}/bin/cat '${statePath}')
