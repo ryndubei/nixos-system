@@ -12,7 +12,7 @@ let
   newPackagesBash = toString (
     map (s: lib.strings.escapeShellArg s.appId) config.services.flatpak.packages
   );
-  newPackagesJson = builtins.concatStringsSep "," (
+  newPackages = builtins.concatStringsSep "," (
     map (s: ''"'' + s.appId + ''"'') config.services.flatpak.packages
   );
 
@@ -39,8 +39,8 @@ let
     # Remove pins for packages that are in OLD_STATE but not in the new state
     ${pkgs.jq}/bin/jq -r -n \
       --argjson old "$OLD_STATE" \
-      --argjson new '{"packages":[${newPackagesJson}]}' \
-      '(($old.packages // []) - ($new.packages // []))[]' \
+      --argjson new '[${newPackages}]' \
+      '([$old.packages[].appId] - $new)[]' \
       | while read -r appid; do
         ${pkgs.flatpak}/bin/flatpak pin --remove "$appid"
       done
