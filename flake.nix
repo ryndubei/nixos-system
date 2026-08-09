@@ -60,6 +60,7 @@
             ./virtualisation/win10.nix
             ./virtualisation/kvmfr.nix
             ./hardware/generated/hardware-configuration-desktop.nix
+            ./hardware/bluez-regression.nix
             ./btrfs.nix
             ./flatpak.nix
             ./hardware/hdd-desktop.nix
@@ -93,6 +94,7 @@
             ./configuration.nix
             ./virtualisation.nix
             ./hardware/generated/hardware-configuration-laptop.nix
+            ./hardware/bluez-regression.nix
             ./btrfs.nix
             ./flatpak.nix
             nixv
