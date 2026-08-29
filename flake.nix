@@ -56,7 +56,6 @@
             ./headless.nix
             ./virtualisation.nix
             ./hardware/nvidia.nix
-            ./hardware/nvidia-desktop.nix
             ./virtualisation/win10.nix
             ./virtualisation/kvmfr.nix
             ./hardware/generated/hardware-configuration-desktop.nix
