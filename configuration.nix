@@ -183,7 +183,6 @@ in
   ];
 
   programs.command-not-found.enable = true;
-  programs.command-not-found.dbPath = inputs.nixpkgs.outPath + "/programs.sqlite";
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
