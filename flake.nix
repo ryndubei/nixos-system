@@ -18,8 +18,6 @@
       url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    fps.url = "github:wamserma/flake-programs-sqlite";
-    fps.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -29,7 +27,6 @@
       nixvirt,
       nix-flatpak,
       lanzaboote,
-      fps,
       nixos-hardware,
       ...
     }@inputs:
@@ -39,16 +36,12 @@
       nvfio = nixos-vfio.nixosModules.default;
       nflatpak = nix-flatpak.nixosModules.nix-flatpak;
       lzbt = lanzaboote.nixosModules.lanzaboote;
-      getProgramsdb = system: fps.packages.${system}.programs-sqlite;
     in
     {
       nixosConfigurations = {
-        nixos-desktop = lib.nixosSystem rec {
+        nixos-desktop = lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = {
-            inherit inputs;
-            programsdb = getProgramsdb system;
-          };
+          specialArgs = { inherit inputs; };
           modules = [
             { networking.hostName = "nixos-desktop"; }
             ./debug.nix
@@ -81,12 +74,9 @@
             }
           ];
         };
-        nixos-laptop = lib.nixosSystem rec {
+        nixos-laptop = lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = {
-            inherit inputs;
-            programsdb = getProgramsdb system;
-          };
+          specialArgs = { inherit inputs; };
           modules = [
             { networking.hostName = "nixos-laptop"; }
             ./debug.nix

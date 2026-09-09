@@ -3,10 +3,10 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 {
+  inputs,
   config,
   pkgs,
   lib,
-  programsdb,
   ...
 }:
 
@@ -182,11 +182,8 @@ in
     '')
   ];
 
-  # Make command-not-found work with flakes
-  # https://blog.nobbz.dev/2023-02-27-nixos-flakes-command-not-found/
-  environment.etc."programs.sqlite".source = programsdb;
   programs.command-not-found.enable = true;
-  programs.command-not-found.dbPath = "/etc/programs.sqlite";
+  programs.command-not-found.dbPath = inputs.nixpkgs.outPath + "/programs.sqlite";
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
