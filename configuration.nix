@@ -79,6 +79,7 @@ in
     [
       gnome-remote-desktop # remote desktop server
       gnome-connections # remote desktop GUI
+      epiphany
     ]
   );
 
