@@ -273,4 +273,7 @@ in
   boot.kernel.sysctl."vm.watermark_boost_factor" = 0;
   boot.kernel.sysctl."vm.watermark_scale_factor" = 125;
   boot.kernel.sysctl."vm.page-cluster" = 0;
+
+  hardware.keyboard.qmk.enable = true;
+  hardware.keyboard.qmk.keychronSupport = true;
 }
