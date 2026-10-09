@@ -1,3 +1,5 @@
+{ pkgs, ... }:
+
 let
   subvolumeOptions = [
     "compress-force=zstd:5"
@@ -41,16 +43,20 @@ in
     };
   };
 
-  services.beesd.filesystems.root = {
-    spec = "/dev/mapper/cryptroot";
-    hashTableSizeMB = 512;
-    workDir = "@beeshome";
-    extraOptions = [
-      "--loadavg-target"
-      "2.0"
-    ];
-    verbosity = "crit";
-  };
+  services.beesd.filesystems.root =
+    # Assertion that will complain at precisely the point when I have to pin bees
+    assert pkgs.bees.version == "0.11";
+    # TODO pin bees
+    {
+      spec = "/dev/mapper/cryptroot";
+      hashTableSizeMB = 512;
+      workDir = "@beeshome";
+      extraOptions = [
+        "--loadavg-target"
+        "2.0"
+      ];
+      verbosity = "crit";
+    };
 
   services.udisks2.settings."mount_options.conf" = {
     defaults = {
