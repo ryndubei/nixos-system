@@ -197,6 +197,21 @@ in
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
+  services.locate = {
+    enable = true;
+    prunePaths = [
+      "/tmp"
+      "/var/tmp"
+      "/var/cache"
+      "/var/lock"
+      "/var/run"
+      "/var/spool"
+      "/nix/store"
+      "/nix/var/log/nix"
+      "/snapshots"
+    ];
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
