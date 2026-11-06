@@ -209,6 +209,7 @@ in
       "/nix/store"
       "/nix/var/log/nix"
       "/snapshots"
+      "/mnt/cryptroot"
     ];
   };
 
