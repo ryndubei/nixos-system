@@ -18,6 +18,10 @@
       url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    bootvine = {
+      url = "git+https://codeberg.org/wvhulle/bootvine";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -28,6 +32,7 @@
       nix-flatpak,
       lanzaboote,
       nixos-hardware,
+      bootvine,
       ...
     }@inputs:
     let
@@ -72,6 +77,7 @@
                 23253 # bg3
               ];
             }
+            bootvine.nixosModules.default
           ];
         };
         nixos-laptop = lib.nixosSystem {
@@ -91,6 +97,7 @@
             lzbt
             ./secureboot.nix
             nixos-hardware.nixosModules.framework-13-7040-amd
+            bootvine.nixosModules.default
           ];
         };
       };
