@@ -69,14 +69,6 @@
             ./hardware/wifi-desktop.nix
             ./wivrn.nix
             ./performance.nix
-            {
-              networking.firewall.allowedTCPPorts = [
-                22565 # mince
-              ];
-              networking.firewall.allowedUDPPorts = [
-                23253 # bg3
-              ];
-            }
             bootvine.nixosModules.default
           ];
         };
