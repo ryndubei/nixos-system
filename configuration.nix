@@ -150,7 +150,7 @@ in
   security.pam.enableFscrypt = true;
 
   services.mullvad-vpn.enable = true;
-  services.mullvad-vpn.package = pkgs.mullvad-vpn;
+  services.mullvad-vpn.gui.enable = true;
   # mullvad-exclude is unused and therefore disabled
   services.mullvad-vpn.enableExcludeWrapper = false;
   # mullvad requires resolved to be enabled to work
@@ -186,8 +186,6 @@ in
       ln -s ${steam-run-free.fhsenv}/usr/include $out/include
     '')
   ];
-
-  programs.command-not-found.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

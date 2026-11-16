@@ -15,11 +15,7 @@
     };
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v1.0.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    bootvine = {
-      url = "git+https://codeberg.org/wvhulle/bootvine";
+      url = "github:nix-community/lanzaboote/v1.2.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -32,7 +28,6 @@
       nix-flatpak,
       lanzaboote,
       nixos-hardware,
-      bootvine,
       ...
     }@inputs:
     let
@@ -69,7 +64,6 @@
             ./hardware/wifi-desktop.nix
             ./wivrn.nix
             ./performance.nix
-            bootvine.nixosModules.default
           ];
         };
         nixos-laptop = lib.nixosSystem {
@@ -89,7 +83,6 @@
             lzbt
             ./secureboot.nix
             nixos-hardware.nixosModules.framework-13-7040-amd
-            bootvine.nixosModules.default
           ];
         };
       };
