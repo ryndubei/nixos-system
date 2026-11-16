@@ -2,7 +2,7 @@
   description = "System configuration";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-26.05";
+    nixpkgs.url = "nixpkgs/709a54766773a5517e3160a9af3427b0b32e32af"; # merge-base of 26.11 with master
     nixos-vfio = {
       # TODO: as below
       url = "github:ryndubei/nixos-vfio/patch-1";
